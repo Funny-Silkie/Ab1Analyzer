@@ -21,7 +21,7 @@ namespace Ab1Analyzer
         /// <summary>
         /// ヘッダーを取得します。
         /// </summary>
-        public Ad1DirectoryEntry Header { get; private set; }
+        public Ab1DirectoryEntry Header { get; private set; }
 
         /// <summary>
         /// <see cref="Ab1Data"/>の新しいインスタンスを初期化します。
@@ -72,13 +72,8 @@ namespace Ab1Analyzer
     /// <summary>
     /// ad1ファイルのヘッダーのクラスを表します。
     /// </summary>
-    public class Ad1DirectoryEntry
+    public class Ab1DirectoryEntry
     {
-        /// <summary>
-        /// バージョン番号を取得します。
-        /// </summary>
-        public short Version { get; private set; }
-
         /// <summary>
         /// タグの名前を取得します。
         /// </summary>
@@ -118,5 +113,33 @@ namespace Ab1Analyzer
         /// reserved space
         /// </summary>
         internal int DataHandle { get; private set; }
+
+        /// <summary>
+        /// <see cref="Ab1DirectoryEntry"/>の新しいインスタンスを初期化します。
+        /// </summary>
+        /// <param name="tagName"><see cref="TagName"/></param>
+        /// <param name="tagNumber"><see cref="TagNumber"/></param>
+        /// <param name="elementTypeCode"><see cref="ElementTypeCode"/></param>
+        /// <param name="elementSize"><see cref="ElementSize"/></param>
+        /// <param name="elementCount"><see cref="ElementCount"/></param>
+        /// <param name="dataSize"><see cref="DataSize"/></param>
+        /// <param name="dataOffset"><see cref="DataOffset"/></param>
+        /// <param name="dataHandle"><see cref="DataHandle"/></param>
+        /// <exception cref="ArgumentNullException"><paramref name="tagName"/>がnull</exception>
+        public Ab1DirectoryEntry(string tagName, int tagNumber, short elementTypeCode, short elementSize, int elementCount, int dataSize, int dataOffset, int dataHandle)
+        {
+            TagName = tagName ?? throw new ArgumentNullException(nameof(tagName));
+            TagNumber = tagNumber;
+            ElementTypeCode = elementTypeCode;
+            ElementSize = elementSize;
+            ElementCount = elementCount;
+            DataSize = dataSize;
+            DataOffset = dataOffset;
+            DataHandle = dataHandle;
+        }
+
+        internal static Ab1DirectoryEntry Create(BinaryReader reader)
+        {
+        }
     }
 }
