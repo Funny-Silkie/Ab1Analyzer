@@ -60,7 +60,7 @@ namespace Ab1Analyzer
 
         /// <summary>
         /// 16ビット符号付き整数を読み込みます。
-        /// </summary> 
+        /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="reader"/>がnull</exception>
         /// <returns>16ビット符号付き整数</returns>
         internal static short ReadAsInt16(this BinaryReader reader)
@@ -72,7 +72,7 @@ namespace Ab1Analyzer
 
         /// <summary>
         /// 32ビット符号付き整数を読み込みます。
-        /// </summary> 
+        /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="reader"/>がnull</exception>
         /// <returns>32ビット符号付き整数</returns>
         internal static int ReadAsInt32(this BinaryReader reader)

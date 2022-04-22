@@ -19,7 +19,6 @@ namespace Ab1Analyzer
                 try
                 {
                     Ab1Data data = Ab1Data.Create(path);
-
                 }
                 catch (Exception e)
                 {

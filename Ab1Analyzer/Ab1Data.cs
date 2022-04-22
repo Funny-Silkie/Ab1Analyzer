@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text;
 
 namespace Ab1Analyzer
 {
@@ -29,7 +28,6 @@ namespace Ab1Analyzer
         /// </summary>
         private Ab1Data()
         {
-
         }
 
         /// <summary>

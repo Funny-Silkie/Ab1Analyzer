@@ -10,7 +10,8 @@ namespace Ab1Analyzer
     {
         internal static void OutputProperty<T>(T value, string propertyName)
         {
-            Console.WriteLine("{0}: {1}", propertyName, typeof(T).GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty)?.GetValue(value));
+            const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty;
+            Console.WriteLine("{0}: {1}", propertyName, typeof(T).GetProperty(propertyName, flags)?.GetValue(value));
         }
     }
 }
