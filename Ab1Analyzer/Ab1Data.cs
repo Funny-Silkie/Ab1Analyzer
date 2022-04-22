@@ -20,6 +20,68 @@ namespace Ab1Analyzer
         public short Version { get; private set; }
 
         /// <summary>
+        /// ヘッダーを取得します。
+        /// </summary>
+        public Ad1DirectoryEntry Header { get; private set; }
+
+        /// <summary>
+        /// <see cref="Ab1Data"/>の新しいインスタンスを初期化します。
+        /// </summary>
+        private Ab1Data()
+        {
+
+        }
+
+        /// <summary>
+        /// <see cref="Ab1Data"/>の新しいインスタンスを生成します。
+        /// </summary>
+        /// <param name="path">読み込むab1ファイルのパス</param>
+        /// <returns><paramref name="path"/>のab1ファイルを読み込んだ<see cref="Ab1Data"/>の新しいインスタンス</returns>
+        public static Ab1Data Create(string path)
+        {
+            using var inputStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using var reader = new BinaryReader(inputStream);
+
+            if (reader.ReadAsString(4) != ABIF) throw new ArgumentException("ファイルのフォーマットが無効です。これはab1ファイルではありません", nameof(path));
+
+            var result = new Ab1Data();
+
+            // ヘッダー読み込み
+            result.Version = BitConverter.ToInt16(reader.ReadAsByteArray(2).AsReverse());
+            result.TagName = reader.ReadAsString(4);
+            result.TagNumber = reader.ReadAsInt32();
+            result.ElementTypeCode = reader.ReadAsInt16();
+            result.ElementSize = reader.ReadAsInt16();
+            result.ElementCount = reader.ReadAsInt32();
+            result.DataSize = reader.ReadAsInt32();
+            result.DataOffset = reader.ReadAsInt32();
+            result.DataHandle = reader.ReadAsInt32();
+
+            Common.OutputProperty(result.Header, "Version");
+            Common.OutputProperty(result.Header, "TagName");
+            Common.OutputProperty(result.Header, "TagNumber");
+            Common.OutputProperty(result.Header, "ElementTypeCode");
+            Common.OutputProperty(result.Header, "ElementSize");
+            Common.OutputProperty(result.Header, "ElementCount");
+            Common.OutputProperty(result.Header, "DataSize");
+            Common.OutputProperty(result.Header, "DataOffset");
+            Common.OutputProperty(result.Header, "DataHandle");
+
+            return result;
+        }
+    }
+
+    /// <summary>
+    /// ad1ファイルのヘッダーのクラスを表します。
+    /// </summary>
+    public class Ad1DirectoryEntry
+    {
+        /// <summary>
+        /// バージョン番号を取得します。
+        /// </summary>
+        public short Version { get; private set; }
+
+        /// <summary>
         /// タグの名前を取得します。
         /// </summary>
         public string TagName { get; private set; }
@@ -58,54 +120,5 @@ namespace Ab1Analyzer
         /// reserved space
         /// </summary>
         internal int DataHandle { get; private set; }
-
-        /// <summary>
-        /// <see cref="Ab1Data"/>の新しいインスタンスを初期化します。
-        /// </summary>
-        private Ab1Data()
-        {
-
-        }
-
-        /// <summary>
-        /// <see cref="Ab1Data"/>の新しいインスタンスを生成します。
-        /// </summary>
-        /// <param name="path">読み込むab1ファイルのパス</param>
-        /// <returns><paramref name="path"/>のab1ファイルを読み込んだ<see cref="Ab1Data"/>の新しいインスタンス</returns>
-        public static Ab1Data Create(string path)
-        {
-            using var inputStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-            using var reader = new BinaryReader(inputStream);
-
-            if (reader.ReadAsString(4) != ABIF) throw new ArgumentException("ファイルのフォーマットが無効です。これはab1ファイルではありません", nameof(path));
-
-            var result = new Ab1Data();
-
-            // ヘッダー読み込み
-            result.Version = BitConverter.ToInt16(reader.ReadAsByteArray(2).AsReverse());
-            result.TagName = reader.ReadAsString(4);
-            result.TagNumber = reader.ReadAsInt32();
-            result.ElementTypeCode = reader.ReadAsInt16();
-            result.ElementSize = reader.ReadAsInt16();
-            result.ElementCount = reader.ReadAsInt32();
-            result.DataSize = reader.ReadAsInt32();
-            result.DataOffset = reader.ReadAsInt32();
-            result.DataHandle = reader.ReadAsInt32();
-
-            // 2バイトエントリー x 47がreserved space
-            inputStream.Position += 94;
-
-            Common.OutputProperty(result, "Version");
-            Common.OutputProperty(result, "TagName");
-            Common.OutputProperty(result, "TagNumber");
-            Common.OutputProperty(result, "ElementTypeCode");
-            Common.OutputProperty(result, "ElementSize");
-            Common.OutputProperty(result, "ElementCount");
-            Common.OutputProperty(result, "DataSize");
-            Common.OutputProperty(result, "DataOffset");
-            Common.OutputProperty(result, "DataHandle");
-
-            return result;
-        }
     }
 }
