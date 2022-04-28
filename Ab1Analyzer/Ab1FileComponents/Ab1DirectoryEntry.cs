@@ -22,7 +22,7 @@ namespace Ab1Analyzer
         /// <summary>
         /// エレメントタイプコードを取得します。
         /// </summary>
-        public short ElementTypeCode { get; private set; }
+        public ElementTypeCode ElementType { get; private set; }
 
         /// <summary>
         /// エレメントのバイト数を取得します。
@@ -64,18 +64,18 @@ namespace Ab1Analyzer
         /// </summary>
         /// <param name="tagName"><see cref="TagName"/></param>
         /// <param name="tagNumber"><see cref="TagNumber"/></param>
-        /// <param name="elementTypeCode"><see cref="ElementTypeCode"/></param>
+        /// <param name="elementType"><see cref="ElementType"/></param>
         /// <param name="elementSize"><see cref="ElementSize"/></param>
         /// <param name="elementCount"><see cref="ElementCount"/></param>
         /// <param name="dataSize"><see cref="DataSize"/></param>
         /// <param name="dataOffset"><see cref="DataOffset"/></param>
         /// <param name="dataHandle"><see cref="DataHandle"/></param>
         /// <exception cref="ArgumentNullException"><paramref name="tagName"/>がnull</exception>
-        public Ab1DirectoryEntry(string tagName, int tagNumber, short elementTypeCode, short elementSize, int elementCount, int dataSize, int dataOffset, int dataHandle)
+        public Ab1DirectoryEntry(string tagName, int tagNumber, ElementTypeCode elementType, short elementSize, int elementCount, int dataSize, int dataOffset, int dataHandle)
         {
             TagName = tagName ?? throw new ArgumentNullException(nameof(tagName));
             TagNumber = tagNumber;
-            ElementTypeCode = elementTypeCode;
+            ElementType = elementType;
             ElementSize = elementSize;
             ElementCount = elementCount;
             DataSize = dataSize;
@@ -94,7 +94,7 @@ namespace Ab1Analyzer
             var result = new Ab1DirectoryEntry();
             result.TagName = reader.ReadAsString(4, Encoding.ASCII);
             result.TagNumber = reader.ReadAsInt32();
-            result.ElementTypeCode = reader.ReadAsInt16();
+            result.ElementType = EnumHelper.ToElementTypeCode(reader.ReadAsInt16());
             result.ElementSize = reader.ReadAsInt16();
             result.ElementCount = reader.ReadAsInt32();
             result.DataSize = reader.ReadAsInt32();
@@ -103,7 +103,7 @@ namespace Ab1Analyzer
 
             Common.OutputProperty(result, nameof(TagName));
             Common.OutputProperty(result, nameof(TagNumber));
-            Common.OutputProperty(result, nameof(ElementTypeCode));
+            Common.OutputProperty(result, nameof(ElementType));
             Common.OutputProperty(result, nameof(ElementSize));
             Common.OutputProperty(result, nameof(ElementCount));
             Common.OutputProperty(result, nameof(DataSize));
