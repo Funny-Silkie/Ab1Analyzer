@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace Ab1Analyzer
@@ -13,6 +15,8 @@ namespace Ab1Analyzer
         /// </summary>
         public const string ABIF = "ABIF";
 
+        private List<Ab1Directory> children = new();
+
         /// <summary>
         /// バージョン番号を取得します。
         /// </summary>
@@ -22,6 +26,12 @@ namespace Ab1Analyzer
         /// ヘッダーを取得します。
         /// </summary>
         public Ab1DirectoryEntry Header { get; private set; }
+
+        /// <summary>
+        /// 格納されているデータを取得します。
+        /// </summary>
+        public ReadOnlyCollection<Ab1Directory> Data => _Data ??= new(_Data);
+        private ReadOnlyCollection<Ab1Directory> _Data;
 
         /// <summary>
         /// <see cref="Ab1Data"/>の新しいインスタンスを初期化します。
@@ -54,6 +64,7 @@ namespace Ab1Analyzer
             for (int i = 0; i < result.Header.ElementCount; i++)
             {
                 Ab1Directory directory = Ab1Directory.Create(reader);
+                result.children.Add(directory);
             }
 
             return result;

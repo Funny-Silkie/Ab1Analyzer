@@ -3,10 +3,11 @@ using System.IO;
 
 namespace Ab1Analyzer
 {
+    /// <summary>
+    /// ab1ファイル内のデータコンテナを表します。
+    /// </summary>
     public class Ab1Directory
     {
-        private byte[] data;
-
         /// <summary>
         /// メタデータを取得します。
         /// </summary>
@@ -29,16 +30,17 @@ namespace Ab1Analyzer
         {
             var result = new Ab1Directory();
             result.MetaData = Ab1DirectoryEntry.Create(reader);
-            if (result.MetaData.DataOffset <= 4) result.data = BitConverter.GetBytes(result.MetaData.DataOffset);
+            byte[] data;
+            if (result.MetaData.DataOffset <= 4) data = BitConverter.GetBytes(result.MetaData.DataOffset);
             else
             {
                 long pos = reader.BaseStream.Position;
                 reader.BaseStream.Position = result.MetaData.DataOffset;
-
+                data = reader.ReadAsByteArray(result.MetaData.DataSize);
                 reader.BaseStream.Position = pos;
             }
 
-            Console.WriteLine("{1}: {0}", string.Join(',', result?.data ?? Array.Empty<byte>()), nameof(data));
+            Console.WriteLine("{1}: {0}", string.Join(',', data), nameof(data));
             Console.WriteLine();
             return result;
 
