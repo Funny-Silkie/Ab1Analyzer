@@ -46,17 +46,15 @@ namespace Ab1Analyzer
 
             // ヘッダー読み込み
             result.Version = BitConverter.ToInt16(reader.ReadAsByteArray(2).AsReverse());
-            result.Header = Ab1DirectoryEntry.Create(reader);
-
             Common.OutputProperty(result, nameof(Version));
-            Common.OutputProperty(result.Header, "TagName");
-            Common.OutputProperty(result.Header, "TagNumber");
-            Common.OutputProperty(result.Header, "ElementTypeCode");
-            Common.OutputProperty(result.Header, "ElementSize");
-            Common.OutputProperty(result.Header, "ElementCount");
-            Common.OutputProperty(result.Header, "DataSize");
-            Common.OutputProperty(result.Header, "DataOffset");
-            Common.OutputProperty(result.Header, "DataHandle");
+            result.Header = Ab1DirectoryEntry.Create(reader);
+            Console.WriteLine();
+
+            inputStream.Position = result.Header.DataOffset;
+            for (int i = 0; i < result.Header.ElementCount; i++)
+            {
+                Ab1Directory directory = Ab1Directory.Create(reader);
+            }
 
             return result;
         }

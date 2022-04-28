@@ -8,6 +8,12 @@ namespace Ab1Analyzer
     /// </summary>
     internal static class Common
     {
+        internal static void OutputField<T>(T value, string fieldName)
+        {
+            const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField;
+            Console.WriteLine("{0}: {1}", fieldName, typeof(T).GetField(fieldName, flags)?.GetValue(value));
+        }
+
         internal static void OutputProperty<T>(T value, string propertyName)
         {
             const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty;

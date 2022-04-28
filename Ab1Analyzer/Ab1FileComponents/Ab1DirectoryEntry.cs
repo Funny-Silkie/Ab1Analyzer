@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace Ab1Analyzer
 {
@@ -39,8 +40,11 @@ namespace Ab1Analyzer
         public int DataSize { get; private set; }
 
         /// <summary>
-        /// データのオフセットを取得します。
+        /// データまたはそのオフセットを取得します。
         /// </summary>
+        /// <remarks>
+        /// データが4バイト以下の場合はデータそのものが，4バイトを超える場合はデータの位置を示します。
+        /// </remarks>
         public int DataOffset { get; private set; }
 
         /// <summary>
@@ -88,7 +92,7 @@ namespace Ab1Analyzer
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
             var result = new Ab1DirectoryEntry();
-            result.TagName = reader.ReadAsString(4);
+            result.TagName = reader.ReadAsString(4, Encoding.ASCII);
             result.TagNumber = reader.ReadAsInt32();
             result.ElementTypeCode = reader.ReadAsInt16();
             result.ElementSize = reader.ReadAsInt16();
@@ -96,6 +100,15 @@ namespace Ab1Analyzer
             result.DataSize = reader.ReadAsInt32();
             result.DataOffset = reader.ReadAsInt32();
             result.DataHandle = reader.ReadAsInt32();
+
+            Common.OutputProperty(result, nameof(TagName));
+            Common.OutputProperty(result, nameof(TagNumber));
+            Common.OutputProperty(result, nameof(ElementTypeCode));
+            Common.OutputProperty(result, nameof(ElementSize));
+            Common.OutputProperty(result, nameof(ElementCount));
+            Common.OutputProperty(result, nameof(DataSize));
+            if (result.DataOffset > 4) Common.OutputProperty(result, nameof(DataOffset));
+            Common.OutputProperty(result, nameof(DataHandle));
 
             return result;
         }
