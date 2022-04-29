@@ -9,9 +9,34 @@ namespace Ab1Analyzer
     public class Ab1Directory
     {
         /// <summary>
+        /// 値の型を表すコードを取得します。
+        /// </summary>
+        public ElementTypeCode ElementType => MetaData.ElementType;
+
+        /// <summary>
         /// メタデータを取得します。
         /// </summary>
-        public Ab1DirectoryEntry MetaData { get; private set; }
+        internal Ab1DirectoryEntry MetaData { get; private set; }
+
+        /// <summary>
+        /// 格納されている値が配列かどうかを表す値を取得します。
+        /// </summary>
+        public bool IsArray => Elements.Length > 1;
+
+        /// <summary>
+        /// タグの名前を取得します。
+        /// </summary>
+        public string TagName => MetaData.TagName;
+
+        /// <summary>
+        /// タグ番号を取得します。
+        /// </summary>
+        public int TagNumber => MetaData.TagNumber;
+
+        /// <summary>
+        /// 値を取得します。
+        /// </summary>
+        public object[] Elements { get; private set; }
 
         /// <summary>
         /// <see cref="Ab1Directory"/>の新しいインスタンスを初期化します。

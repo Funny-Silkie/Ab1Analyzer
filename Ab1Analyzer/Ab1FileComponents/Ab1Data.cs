@@ -15,7 +15,7 @@ namespace Ab1Analyzer
         /// </summary>
         public const string ABIF = "ABIF";
 
-        private List<Ab1Directory> children = new();
+        private readonly List<Ab1Directory> children = new();
 
         /// <summary>
         /// バージョン番号を取得します。
@@ -25,12 +25,12 @@ namespace Ab1Analyzer
         /// <summary>
         /// ヘッダーを取得します。
         /// </summary>
-        public Ab1DirectoryEntry Header { get; private set; }
+        internal Ab1DirectoryEntry Header { get; private set; }
 
         /// <summary>
         /// 格納されているデータを取得します。
         /// </summary>
-        public ReadOnlyCollection<Ab1Directory> Data => _Data ??= new(_Data);
+        public ReadOnlyCollection<Ab1Directory> Data => _Data ??= new(children);
 
         private ReadOnlyCollection<Ab1Directory> _Data;
 
@@ -56,7 +56,7 @@ namespace Ab1Analyzer
             var result = new Ab1Data();
 
             // ヘッダー読み込み
-            result.Version = BitConverter.ToInt16(reader.ReadAsByteArray(2).AsReverse());
+            result.Version = reader.ReadAsInt16();
             Common.OutputProperty(result, nameof(Version));
             result.Header = Ab1DirectoryEntry.Create(reader);
             Console.WriteLine();
