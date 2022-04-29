@@ -31,6 +31,7 @@ namespace Ab1Analyzer
         /// 格納されているデータを取得します。
         /// </summary>
         public ReadOnlyCollection<Ab1Directory> Data => _Data ??= new(_Data);
+
         private ReadOnlyCollection<Ab1Directory> _Data;
 
         /// <summary>

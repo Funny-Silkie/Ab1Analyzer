@@ -43,7 +43,6 @@ namespace Ab1Analyzer
             Console.WriteLine("{1}: {0}", string.Join(',', data), nameof(data));
             Console.WriteLine();
             return result;
-
         }
     }
 }
