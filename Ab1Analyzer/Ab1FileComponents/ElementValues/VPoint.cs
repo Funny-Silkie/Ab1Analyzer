@@ -38,6 +38,9 @@ namespace Ab1Analyzer
         /// <inheritdoc/>
         public override readonly int GetHashCode() => HashCode.Combine(v, h);
 
+        /// <inheritdoc/>
+        public override readonly string ToString() => $"({v}, {h})";
+
         public static bool operator ==(VPoint left, VPoint right) => left.Equals(right);
 
         public static bool operator !=(VPoint left, VPoint right) => !(left == right);

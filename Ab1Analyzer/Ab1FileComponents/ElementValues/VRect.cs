@@ -33,6 +33,9 @@ namespace Ab1Analyzer
         /// <inheritdoc/>
         public override readonly int GetHashCode() => HashCode.Combine(top, left, bottom, right);
 
+        /// <inheritdoc/>
+        public override readonly string ToString() => $"({top}, {left}, {bottom}, {right})";
+
         public static bool operator ==(VRect left, VRect right) => left.Equals(right);
 
         public static bool operator !=(VRect left, VRect right) => !(left == right);

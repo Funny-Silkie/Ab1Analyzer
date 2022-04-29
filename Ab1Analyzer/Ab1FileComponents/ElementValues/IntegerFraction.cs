@@ -38,6 +38,9 @@ namespace Ab1Analyzer
         /// <inheritdoc/>
         public override readonly int GetHashCode() => HashCode.Combine(numerator, denominator);
 
+        /// <inheritdoc/>
+        public override readonly string ToString() => $"{numerator} / {denominator}";
+
         public static bool operator ==(IntegerFraction left, IntegerFraction right) => left.Equals(right);
 
         public static bool operator !=(IntegerFraction left, IntegerFraction right) => !(left == right);

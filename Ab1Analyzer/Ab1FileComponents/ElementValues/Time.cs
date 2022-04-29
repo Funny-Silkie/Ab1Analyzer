@@ -52,6 +52,9 @@ namespace Ab1Analyzer
         /// <inheritdoc/>
         public override readonly int GetHashCode() => HashCode.Combine(hour, minute, second, hsecond);
 
+        /// <inheritdoc/>
+        public override readonly string ToString() => $"{hour}:{minute}:{second}:{hsecond}";
+
         public static bool operator ==(Time left, Time right) => left.Equals(right);
 
         public static bool operator !=(Time left, Time right) => !(left == right);
