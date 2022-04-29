@@ -3,23 +3,28 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{37934315-49BB-FFB5-BB06-010AEA7B77B0}") = "Ab1Analyzer", "Ab1Analyzer\Ab1Analyzer.csproj", "{890BE670-044F-C2D0-C536-6D0F43E04F37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ab1Analyzer", "Ab1Analyzer\Ab1Analyzer.csproj", "{890BE670-044F-C2D0-C536-6D0F43E04F37}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4416C2DA-4146-4A34-A44A-14DBBB9518CC}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		EndGlobalSection
+	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{890BE670-044F-C2D0-C536-6D0F43E04F37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{890BE670-044F-C2D0-C536-6D0F43E04F37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{890BE670-044F-C2D0-C536-6D0F43E04F37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{890BE670-044F-C2D0-C536-6D0F43E04F37}.Release|Any CPU.Build.0 = Release|Any CPU
-		EndGlobalSection
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-		EndGlobalSection
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1CB69A60-3E2D-1EF5-7049-FC72CD59C5ED}
-		EndGlobalSection
+	EndGlobalSection
 EndGlobal

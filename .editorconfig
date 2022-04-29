@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# IDE0011: 波かっこを追加します
+dotnet_diagnostic.IDE0011.severity = silent
