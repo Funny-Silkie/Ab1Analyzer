@@ -1,3 +1,4 @@
+using Ab1Analyzer.ElementParsers;
 using System;
 using System.IO;
 
@@ -12,6 +13,11 @@ namespace Ab1Analyzer
         /// 値の型を表すコードを取得します。
         /// </summary>
         public ElementTypeCode ElementType => MetaData.ElementType;
+
+        /// <summary>
+        /// 値を取得します。
+        /// </summary>
+        public object[] Elements { get; private set; }
 
         /// <summary>
         /// メタデータを取得します。
@@ -32,11 +38,6 @@ namespace Ab1Analyzer
         /// タグ番号を取得します。
         /// </summary>
         public int TagNumber => MetaData.TagNumber;
-
-        /// <summary>
-        /// 値を取得します。
-        /// </summary>
-        public object[] Elements { get; private set; }
 
         /// <summary>
         /// <see cref="Ab1Directory"/>の新しいインスタンスを初期化します。
@@ -61,11 +62,13 @@ namespace Ab1Analyzer
             {
                 long pos = reader.BaseStream.Position;
                 reader.BaseStream.Position = result.MetaData.DataOffset;
-                data = reader.ReadAsByteArray(result.MetaData.DataSize).AsReverse();
+                data = reader.ReadAsByteArray(result.MetaData.DataSize);
                 reader.BaseStream.Position = pos;
             }
 
-            Console.WriteLine("{1}: {0}", string.Join(',', data), nameof(data));
+            result.Elements = ElementParser.GetParser(result.MetaData.ElementType).Parse(data, result.MetaData.ElementCount);
+
+            Console.WriteLine("{1}: {0}", string.Join(',', result.Elements), nameof(result.Elements));
             Console.WriteLine();
             return result;
         }

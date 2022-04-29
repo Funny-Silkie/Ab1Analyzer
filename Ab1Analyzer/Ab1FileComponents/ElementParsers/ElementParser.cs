@@ -71,7 +71,7 @@ namespace Ab1Analyzer.ElementParsers
         /// <param name="binary">変換するバイト配列</param>
         /// <param name="elementCount">要素数</param>
         /// <exception cref="ArgumentNullException"><paramref name="binary"/>がnull</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="elementCount"/>が1以下</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="elementCount"/>が0以下</exception>
         /// <returns>変換後の<paramref name="binary"/>の値</returns>
         public abstract object[] Parse(byte[] binary, int elementCount);
     }
@@ -100,7 +100,7 @@ namespace Ab1Analyzer.ElementParsers
         public override object[] Parse(byte[] binary, int elementCount)
         {
             if (binary == null) throw new ArgumentNullException(nameof(binary));
-            if (elementCount <= 1) throw new ArgumentOutOfRangeException(nameof(elementCount), "引数が1以下です");
+            if (elementCount <= 0) throw new ArgumentOutOfRangeException(nameof(elementCount), "引数が0以下です");
 
             if (ElementSize == -1) return new object[] { ParseInternal(binary) };
             object[] result = new object[elementCount];
