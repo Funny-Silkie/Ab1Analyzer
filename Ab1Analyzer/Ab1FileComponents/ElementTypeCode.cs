@@ -80,7 +80,7 @@ namespace Ab1Analyzer
 
         /// <summary>
         /// C-type(null終端)文字列
-        /// ElementSize: byte
+        /// ElementSize: 1byte
         /// </summary>
         /// <remarks>
         /// 8bit ASCII文字列+最後にnull文字<br/>

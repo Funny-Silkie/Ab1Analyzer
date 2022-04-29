@@ -61,7 +61,7 @@ namespace Ab1Analyzer
             {
                 long pos = reader.BaseStream.Position;
                 reader.BaseStream.Position = result.MetaData.DataOffset;
-                data = reader.ReadAsByteArray(result.MetaData.DataSize);
+                data = reader.ReadAsByteArray(result.MetaData.DataSize).AsReverse();
                 reader.BaseStream.Position = pos;
             }
 
