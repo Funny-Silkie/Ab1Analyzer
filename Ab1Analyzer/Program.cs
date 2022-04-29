@@ -19,15 +19,8 @@ namespace Ab1Analyzer
                 try
                 {
                     Ab1Data data = Ab1Data.Create(path);
-                    using var writer = new StreamWriter($"{Path.GetFileName(path)}.csv", false);
-                    writer.WriteLine("TagName,TagNumber,ElementType,ElementSize,DataSize,ElementSize*ElementCount");
-                    foreach (var current in data.Data)
-                    {
-                        var metaData = current.MetaData;
-                        string elementType = metaData.ElementType.ToString().Replace("EL_", string.Empty);
-                        if (metaData.ElementCount > 1) elementType = $"{elementType}[{metaData.ElementCount}]";
-                        writer.WriteLine($"{metaData.TagName},{metaData.TagNumber},{elementType},{metaData.ElementSize},{metaData.DataSize},{metaData.ElementSize * metaData.ElementCount}");
-                    }
+                    data.ExportBinaryMetaData($"{Path.GetFileName(path)}.csv");
+                    data.ExportElementData($"{Path.GetFileName(path)}_Data.json");
                 }
                 catch (Exception e)
                 {

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
+using System.Text.Json;
 
 namespace Ab1Analyzer
 {
@@ -57,7 +59,7 @@ namespace Ab1Analyzer
 
             // ヘッダー読み込み
             result.Version = reader.ReadAsInt16();
-            Common.OutputProperty(result, nameof(Version));
+            //Common.OutputProperty(result, nameof(Version));
             result.Header = Ab1DirectoryEntry.Create(reader);
             Console.WriteLine();
 
@@ -69,6 +71,51 @@ namespace Ab1Analyzer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 各要素のメタデータをcsv形式で出力します。
+        /// </summary>
+        /// <param name="path">出力先のパス</param>
+        public void ExportBinaryMetaData(string path)
+        {
+            using var writer = new StreamWriter(path, false);
+            writer.WriteLine("TagName,TagNumber,ElementType,ElementSize,DataSize,ElementSize*ElementCount");
+            foreach (var current in Data)
+            {
+                var metaData = current.MetaData;
+                string elementType = metaData.ElementType.ToString().Replace("EL_", string.Empty);
+                if (current.IsArray) elementType = $"{elementType}[{metaData.ElementCount}]";
+                writer.WriteLine($"{metaData.TagName},{metaData.TagNumber},{elementType},{metaData.ElementSize},{metaData.DataSize},{metaData.ElementSize * metaData.ElementCount}");
+            }
+        }
+
+        /// <summary>
+        /// 各要素をjson形式で出力します。
+        /// </summary>
+        /// <param name="path">出力先のパス</param>
+        public void ExportElementData(string path)
+        {
+            var serializedValue = Data
+                .Select(x =>
+                {
+                    string type = x.ElementType.ToString().Replace("EL_", string.Empty);
+                    if (x.IsArray) type += $"[{x.MetaData.ElementCount}]";
+                    return new
+                    {
+                        name = x.TagName,
+                        number = x.TagNumber,
+                        type = type,
+                        elements = x.IsArray ? x.Elements : x.Elements[0],
+                    };
+                })
+                .ToList();
+            string json = JsonSerializer.Serialize(serializedValue, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                IncludeFields = true,
+            });
+            File.WriteAllText(path, json);
         }
     }
 }

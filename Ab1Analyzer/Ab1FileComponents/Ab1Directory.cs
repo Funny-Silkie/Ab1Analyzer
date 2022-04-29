@@ -67,9 +67,6 @@ namespace Ab1Analyzer
             }
 
             result.Elements = ElementParser.GetParser(result.MetaData.ElementType).Parse(data, result.MetaData.ElementCount);
-
-            Console.WriteLine("{1}: {0}", string.Join(',', result.Elements), nameof(result.Elements));
-            Console.WriteLine();
             return result;
         }
     }
