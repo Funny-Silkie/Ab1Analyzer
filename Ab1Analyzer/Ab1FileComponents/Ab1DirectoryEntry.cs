@@ -20,17 +20,17 @@ namespace Ab1Analyzer
         public int TagNumber { get; private set; }
 
         /// <summary>
-        /// エレメントタイプコードを取得します。
+        /// 値の型を表すコードを取得します。
         /// </summary>
         public ElementTypeCode ElementType { get; private set; }
 
         /// <summary>
-        /// エレメントのバイト数を取得します。
+        /// 値のバイト数を取得します。
         /// </summary>
         public short ElementSize { get; private set; }
 
         /// <summary>
-        /// エレメント数を取得します。
+        /// 格納されている値の数を取得します。
         /// </summary>
         public int ElementCount { get; private set; }
 
