@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_Byte"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -21,9 +19,9 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override byte ParseInternal(byte[] binary)
+        protected override byte ParseInternal(BitInfo bytes)
         {
-            return binary[0];
+            return bytes.ToByte();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_Date"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -21,12 +19,12 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override Date ParseInternal(byte[] binary)
+        protected override Date ParseInternal(BitInfo bytes)
         {
             var result = new Date();
-            result.year = BitConverter.ToInt16(binary, 0);
-            result.month = binary[2];
-            result.day = binary[3];
+            result.year = bytes.ToInt16(0);
+            result.month = bytes.ToByte(2);
+            result.day = bytes.ToByte(3);
             return result;
         }
     }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_Word"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -21,9 +19,9 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override ushort ParseInternal(byte[] binary)
+        protected override ushort ParseInternal(BitInfo bytes)
         {
-            return BitConverter.ToUInt16(binary);
+            return bytes.ToUInt16();
         }
     }
 }

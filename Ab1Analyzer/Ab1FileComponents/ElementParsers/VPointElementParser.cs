@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_VPoint"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -21,11 +19,11 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override VPoint ParseInternal(byte[] binary)
+        protected override VPoint ParseInternal(BitInfo bytes)
         {
             var result = new VPoint();
-            result.v = BitConverter.ToInt32(binary, 0);
-            result.h = BitConverter.ToInt32(binary, 4);
+            result.v = bytes.ToInt32(0);
+            result.h = bytes.ToInt32(4);
             return result;
         }
     }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_Point"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -21,11 +19,11 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override Point ParseInternal(byte[] binary)
+        protected override Point ParseInternal(BitInfo bytes)
         {
             var result = new Point();
-            result.v = BitConverter.ToInt16(binary, 0);
-            result.h = BitConverter.ToInt16(binary, 2);
+            result.v = bytes.ToInt16(0);
+            result.h = bytes.ToInt16(2);
             return result;
         }
     }

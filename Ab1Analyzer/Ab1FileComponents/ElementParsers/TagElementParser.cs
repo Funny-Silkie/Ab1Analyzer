@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_Tag"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -22,11 +19,11 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override Tag ParseInternal(byte[] binary)
+        protected override Tag ParseInternal(BitInfo bytes)
         {
             var result = new Tag();
-            result.name = Encoding.ASCII.GetString(binary, 0, 4);
-            result.number = BitConverter.ToInt32(binary, 4);
+            result.name = bytes.ToASCIIString(0, 4);
+            result.number = bytes.ToInt32(4);
             return result;
         }
     }

@@ -2,3 +2,21 @@
 
 # IDE0011: 波かっこを追加します
 dotnet_diagnostic.IDE0011.severity = silent
+
+# IDE0007: 暗黙的な型の使用
+dotnet_diagnostic.IDE0007.severity = none
+
+# IDE0017: オブジェクトの初期化を簡略化します
+dotnet_diagnostic.IDE0017.severity = silent
+
+# IDE0021: コンストラクターに式本体を使用する
+dotnet_diagnostic.IDE0021.severity = none
+
+# IDE0090: 'new(...)' を使用する
+dotnet_diagnostic.IDE0090.severity = silent
+
+# IDE0046: 条件式に変換します
+dotnet_diagnostic.IDE0046.severity = silent
+
+# IDE0022: メソッドに式本体を使用する
+dotnet_diagnostic.IDE0022.severity = silent

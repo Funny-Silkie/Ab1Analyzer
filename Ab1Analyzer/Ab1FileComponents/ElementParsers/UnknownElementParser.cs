@@ -19,9 +19,9 @@
         }
 
         /// <inheritdoc/>
-        protected override byte[] ParseInternal(byte[] binary)
+        protected override byte[] ParseInternal(BitInfo bytes)
         {
-            return binary;
+            return bytes.ToArray();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_Rational"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -21,11 +19,11 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override IntegerFraction ParseInternal(byte[] binary)
+        protected override IntegerFraction ParseInternal(BitInfo bytes)
         {
             var result = new IntegerFraction();
-            result.numerator = BitConverter.ToInt32(binary, 0);
-            result.denominator = BitConverter.ToInt32(binary, 4);
+            result.numerator = bytes.ToInt32(0);
+            result.denominator = bytes.ToInt32(4);
             return result;
         }
     }

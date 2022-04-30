@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_PString"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -21,10 +19,10 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override string ParseInternal(byte[] binary)
+        protected override string ParseInternal(BitInfo bytes)
         {
-            byte length = binary[0];
-            return Encoding.ASCII.GetString(binary.SubArray(1, length));
+            byte length = bytes.ToByte(0);
+            return bytes.ToASCIIString(1, length);
         }
     }
 }

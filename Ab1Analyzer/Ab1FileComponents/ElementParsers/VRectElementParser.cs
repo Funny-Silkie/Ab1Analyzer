@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_VRect"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -21,13 +19,13 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override VRect ParseInternal(byte[] binary)
+        protected override VRect ParseInternal(BitInfo bytes)
         {
             var result = new VRect();
-            result.top = BitConverter.ToInt32(binary, 0);
-            result.left = BitConverter.ToInt32(binary, 4);
-            result.bottom = BitConverter.ToInt32(binary, 8);
-            result.right = BitConverter.ToInt32(binary, 12);
+            result.top = bytes.ToInt32(0);
+            result.left = bytes.ToInt32(4);
+            result.bottom = bytes.ToInt32(8);
+            result.right = bytes.ToInt32(12);
             return result;
         }
     }

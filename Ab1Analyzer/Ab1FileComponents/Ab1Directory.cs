@@ -66,7 +66,7 @@ namespace Ab1Analyzer
                 reader.BaseStream.Position = pos;
             }
 
-            result.Elements = ElementParser.GetParser(result.MetaData.ElementType).Parse(data, result.MetaData.ElementCount);
+            result.Elements = ElementParser.GetParser(result.MetaData.ElementType).Parse(new BitInfo(data), result.MetaData.ElementCount);
             return result;
         }
     }

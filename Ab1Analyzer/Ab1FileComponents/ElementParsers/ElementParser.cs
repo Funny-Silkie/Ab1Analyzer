@@ -5,7 +5,7 @@ namespace Ab1Analyzer.ElementParsers
     /// <summary>
     /// 要素の値を変換するクラスです。
     /// </summary>
-    public abstract class ElementParser
+    internal abstract class ElementParser
     {
         /// <summary>
         /// 要素のバイト数を取得します。
@@ -68,19 +68,19 @@ namespace Ab1Analyzer.ElementParsers
         /// <summary>
         /// バイト配列から値を変換します。
         /// </summary>
-        /// <param name="binary">変換するバイト配列</param>
+        /// <param name="bytes">変換するバイト配列</param>
         /// <param name="elementCount">要素数</param>
         /// <exception cref="ArgumentNullException"><paramref name="binary"/>がnull</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="elementCount"/>が0以下</exception>
         /// <returns>変換後の<paramref name="binary"/>の値</returns>
-        public abstract object[] Parse(byte[] binary, int elementCount);
+        public abstract object[] Parse(BitInfo bytes, int elementCount);
     }
 
     /// <summary>
     /// 要素の値を変換するクラスです。
     /// </summary>
     /// <typeparam name="T">変換先の型</typeparam>
-    public abstract class ElementParser<T> : ElementParser
+    internal abstract class ElementParser<T> : ElementParser
     {
         /// <summary>
         /// <see cref="ElementParser{T}"/>の新しいインスタンスを初期化します。
@@ -92,19 +92,19 @@ namespace Ab1Analyzer.ElementParsers
         /// <summary>
         /// バイト配列から値を変換します。
         /// </summary>
-        /// <param name="binary"><see cref="ElementParser.ElementSize"/>と同サイズのバイナリ配列</param>
+        /// <param name="bytes"><see cref="ElementParser.ElementSize"/>と同サイズのバイナリ配列</param>
         /// <returns>変換後の<paramref name="binary"/>の値</returns>
-        protected abstract T ParseInternal(byte[] binary);
+        protected abstract T ParseInternal(BitInfo bytes);
 
         /// <inheritdoc/>
-        public override object[] Parse(byte[] binary, int elementCount)
+        public override object[] Parse(BitInfo bytes, int elementCount)
         {
-            if (binary == null) throw new ArgumentNullException(nameof(binary));
+            if (bytes == null) throw new ArgumentNullException(nameof(bytes));
             if (elementCount <= 0) throw new ArgumentOutOfRangeException(nameof(elementCount), "引数が0以下です");
 
-            if (ElementSize == -1) return new object[] { ParseInternal(binary) };
+            if (ElementSize == -1) return new object[] { ParseInternal(bytes) };
             object[] result = new object[elementCount];
-            for (int i = 0; i < elementCount; i++) result[i] = ParseInternal(binary.SubArray(i * ElementSize, ElementSize));
+            for (int i = 0; i < elementCount; i++) result[i] = ParseInternal(bytes.Slice(i * ElementSize, ElementSize));
             return result;
         }
     }

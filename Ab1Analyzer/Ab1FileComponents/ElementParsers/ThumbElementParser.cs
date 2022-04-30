@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_Thumb"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -21,13 +19,13 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override ThumbPrint ParseInternal(byte[] binary)
+        protected override ThumbPrint ParseInternal(BitInfo bytes)
         {
             var result = new ThumbPrint();
-            result.d = BitConverter.ToInt32(binary, 0);
-            result.u = BitConverter.ToInt32(binary, 4);
-            result.c = binary[8];
-            result.n = binary[9];
+            result.d = bytes.ToInt32(0);
+            result.u = bytes.ToInt32(4);
+            result.c = bytes.ToByte(8);
+            result.n = bytes.ToByte(9);
             return result;
         }
     }

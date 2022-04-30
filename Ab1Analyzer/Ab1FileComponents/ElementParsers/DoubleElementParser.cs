@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_Double"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -21,9 +19,9 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override double ParseInternal(byte[] binary)
+        protected override double ParseInternal(BitInfo bytes)
         {
-            return BitConverter.ToDouble(binary);
+            return bytes.ToDouble();
         }
     }
 }

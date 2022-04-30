@@ -19,13 +19,13 @@
         }
 
         /// <inheritdoc/>
-        protected override Time ParseInternal(byte[] binary)
+        protected override Time ParseInternal(BitInfo bytes)
         {
             var result = new Time();
-            result.hour = binary[0];
-            result.minute = binary[1];
-            result.second = binary[2];
-            result.hsecond = binary[3];
+            result.hour = bytes.ToByte(0);
+            result.minute = bytes.ToByte(1);
+            result.second = bytes.ToByte(2);
+            result.hsecond = bytes.ToByte(3);
             return result;
         }
     }

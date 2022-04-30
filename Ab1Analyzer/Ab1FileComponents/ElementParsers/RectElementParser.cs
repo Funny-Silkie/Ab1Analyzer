@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ab1Analyzer.ElementParsers
+﻿namespace Ab1Analyzer.ElementParsers
 {
     /// <summary>
     /// <see cref="ElementTypeCode.EL_Rect"/>に対応する<see cref="ElementParser{T}"/>です。
@@ -21,13 +19,13 @@ namespace Ab1Analyzer.ElementParsers
         }
 
         /// <inheritdoc/>
-        protected override Rect ParseInternal(byte[] binary)
+        protected override Rect ParseInternal(BitInfo bytes)
         {
             var result = new Rect();
-            result.top = BitConverter.ToInt16(binary, 0);
-            result.left = BitConverter.ToInt16(binary, 2);
-            result.bottom = BitConverter.ToInt16(binary, 4);
-            result.right = BitConverter.ToInt16(binary, 6);
+            result.top = bytes.ToInt16(0);
+            result.left = bytes.ToInt16(2);
+            result.bottom = bytes.ToInt16(4);
+            result.right = bytes.ToInt16(6);
             return result;
         }
     }

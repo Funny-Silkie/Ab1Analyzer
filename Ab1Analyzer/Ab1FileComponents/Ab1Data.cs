@@ -105,7 +105,7 @@ namespace Ab1Analyzer
                     {
                         name = x.TagName,
                         number = x.TagNumber,
-                        type = type,
+                        type,
                         elements = x.IsArray ? x.Elements : x.Elements[0],
                     };
                 })

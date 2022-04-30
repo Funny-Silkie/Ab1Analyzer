@@ -50,7 +50,7 @@ namespace Ab1Analyzer
         EL_Float = 7,
 
         /// <summary>
-        /// 32bit浮動小数点数
+        /// 64bit浮動小数点数
         /// ElementSize: 8byte
         /// </summary>
         EL_Double = 8,
