@@ -23,3 +23,6 @@ dotnet_diagnostic.IDE0022.severity = silent
 
 # IDE0016: スロー' 式を使用する
 dotnet_diagnostic.IDE0016.severity = silent
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = none
