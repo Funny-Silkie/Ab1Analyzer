@@ -14,6 +14,7 @@ namespace Ab1Analyzer
         private const string Tag_CTNM = "CTNM";
         private const string Tag_DATA = "DATA";
         private const string Tag_PBAS = "PBAS";
+        private const string Tag_PLOC = "PLOC";
 
         private readonly Ab1Data file;
 
@@ -65,6 +66,24 @@ namespace Ab1Analyzer
         }
 
         private SequenceData _analyzedData;
+
+        /// <summary>
+        /// <see cref="AnalyzedData"/>におけるピークのインデックスを取得します。
+        /// </summary>
+        public short[] Peaks
+        {
+            get
+            {
+                if (_peaks == null)
+                {
+                    Ab1Directory ploc = GetOrThrow(Tag_PLOC, 2);
+                    _peaks = Array.ConvertAll(ploc.Elements, x => (short)x);
+                }
+                return _peaks;
+            }
+        }
+
+        private short[] _peaks;
 
         /// <summary>
         /// 推測した配列データを取得します。
