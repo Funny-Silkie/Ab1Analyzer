@@ -7,6 +7,7 @@ namespace Ab1Analyzer
     /// <summary>
     /// ad1ファイルのヘッダーのクラスを表します。
     /// </summary>
+    [Serializable]
     public class Ab1DirectoryEntry
     {
         /// <summary>

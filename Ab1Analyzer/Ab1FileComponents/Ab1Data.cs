@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -10,14 +8,13 @@ namespace Ab1Analyzer
     /// <summary>
     /// ab1ファイルのデータを表すクラスです。
     /// </summary>
+    [Serializable]
     public class Ab1Data
     {
         /// <summary>
         /// 頭4バイト分の文字列
         /// </summary>
         public const string ABIF = "ABIF";
-
-        private readonly List<Ab1Directory> children = new();
 
         /// <summary>
         /// バージョン番号を取得します。
@@ -32,9 +29,7 @@ namespace Ab1Analyzer
         /// <summary>
         /// 格納されているデータを取得します。
         /// </summary>
-        public ReadOnlyCollection<Ab1Directory> Data => _Data ??= new(children);
-
-        private ReadOnlyCollection<Ab1Directory> _Data;
+        public Ab1DirectoryCollection Data { get; } = new Ab1DirectoryCollection();
 
         /// <summary>
         /// <see cref="Ab1Data"/>の新しいインスタンスを初期化します。
@@ -67,7 +62,7 @@ namespace Ab1Analyzer
             for (int i = 0; i < result.Header.ElementCount; i++)
             {
                 Ab1Directory directory = Ab1Directory.Create(reader);
-                result.children.Add(directory);
+                result.Data.Add(directory);
             }
 
             return result;

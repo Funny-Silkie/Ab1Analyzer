@@ -8,6 +8,7 @@ namespace Ab1Analyzer
     /// <summary>
     /// <see cref="Ab1Directory"/>のコレクションのクラスです。
     /// </summary>
+    [Serializable]
     public class Ab1DirectoryCollection : ICollection<Ab1Directory>, IReadOnlyCollection<Ab1Directory>, ICollection
     {
         private readonly SortedList<string, Dictionary<int, Ab1Directory>> items;

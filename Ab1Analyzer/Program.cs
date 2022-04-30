@@ -21,6 +21,8 @@ namespace Ab1Analyzer
                     Ab1Data data = Ab1Data.Create(path);
                     data.ExportBinaryMetaData($"{Path.GetFileName(path)}.csv");
                     data.ExportElementData($"{Path.GetFileName(path)}_Data.json");
+                    var wrapper = new Ab1Wrapper(data);
+                    wrapper.ExportFasta($"{Path.GetFileName(path)}.fasta");
                 }
                 catch (Exception e)
                 {
