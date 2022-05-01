@@ -7,9 +7,10 @@
         xmlns:vm="clr-namespace:Ab1Analyzer.Visualizer.ViewModels"
         xmlns:local="clr-namespace:Ab1Analyzer.Visualizer.Views"
         xmlns:beh="clr-namespace:Ab1Analyzer.Visualizer.Views.Behaviors"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         x:Name="window"
-        Background="#F0F0F0" Title="Ab1 Visualiser" Height="650" Width="1200">
+        Background="#F0F0F0" Title="{Binding Path=OpenedFilePath.Value, StringFormat=Ab1 Visualiser {0}}" Height="650" Width="1200">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -22,23 +23,27 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="ファイル(_F)">
-                <MenuItem Header="新規(_N)" InputGestureText="Ctrl+N" />
-                <MenuItem Header="開く(_O)" InputGestureText="Ctrl+O" />
-                <MenuItem Header="上書き保存(_S)" InputGestureText="Ctrl+S" />
-                <MenuItem Header="名前を付けて保存(_A)" InputGestureText="Ctrl+Shift+S" />
+                <MenuItem Header="開く(_O)" InputGestureText="Ctrl+O" Command="{Binding Path=OpenFile}" />
+                <MenuItem Header="エクスポート(_E)">
+                    <MenuItem Header="メタデータ(_M)" />
+                    <MenuItem Header="プロパティ(_P)" />
+                    <MenuItem Header="Rawデータ(_R)" />
+                    <MenuItem Header="解析データ(_A)" />
+                </MenuItem>
                 <Separator />
                 <MenuItem Header="終了(_X)" InputGestureText="Ctrl+W" />
-            </MenuItem>
-            <MenuItem Header="編集(_E)">
             </MenuItem>
             <MenuItem Header="表示(_V)">
             </MenuItem>
         </Menu>
+        <oxy:PlotView Margin="15,15" Grid.Row="1" Model="{Binding Path=RawDataPlotModel.Value}" />
+        <oxy:PlotView Margin="15,15" Grid.Row="2" Model="{Binding Path=AnalyzedDataPlotModel.Value}" />
     </Grid>
     <Window.InputBindings>
-        <KeyBinding Gesture="Ctrl+W" />
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding Path=OpenFile}" />
     </Window.InputBindings>
 </Window>

@@ -12,6 +12,7 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// </summary>
         protected ViewModelBase()
         {
+            InitializeCommands();
         }
 
         /// <inheritdoc/>
