@@ -117,7 +117,7 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox.Show($"ファイルの読み込みに失敗しました\n{e.GetType().FullName}: {e.Message}");
+                VmCommon.ShowErrorMessage("ファイルの読み込みに失敗しました", e);
                 _ContainerName.Value = null;
                 _Sequence.Value = null;
                 ClearGraph(RawDataPlotModel.Value);
@@ -277,6 +277,11 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             base.InitializeCommands();
 
             OpenFile.Subscribe(CommandOpenFile);
+            ExportMetaData.Subscribe(CommandExportMetaData);
+            ExportProperties.Subscribe(CommandExportProperties);
+            ExportRawData.Subscribe(CommandExportRawData);
+            ExportAnalyzedData.Subscribe(CommandExportAnalyzedData);
+            ExportFasta.Subscribe(CommandExportFasta);
         }
 
         #region File
@@ -286,6 +291,9 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// </summary>
         public ReactiveCommand OpenFile { get; } = new();
 
+        /// <summary>
+        /// ab1ファイルを読み込みます。
+        /// </summary>
         private void CommandOpenFile()
         {
             var dialog = new OpenFileDialog
@@ -298,6 +306,146 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             };
             if (dialog.ShowDialog() != true) return;
             _OpenedFilePath.Value = dialog.FileName;
+        }
+
+        /// <summary>
+        /// <see cref="CommandExportMetaData"/>を実行するコマンドです。
+        /// </summary>
+        public ReactiveCommand ExportMetaData { get; } = new();
+
+        /// <summary>
+        /// 各要素のメタデータを出力します。
+        /// </summary>
+        private void CommandExportMetaData()
+        {
+            var dialog = new SaveFileDialog
+            {
+                CheckPathExists = true,
+                FileName = $"{ContainerName.Value}.csv",
+                DefaultExt = ".csv",
+                Filter = "csvファイル|*.csv",
+            };
+            if (dialog.ShowDialog() != true) return;
+            try
+            {
+                data.ExportBinaryMetaData(dialog.FileName);
+            }
+            catch (Exception e)
+            {
+                VmCommon.ShowErrorMessage("エクスポートに失敗しました", e);
+            }
+        }
+
+        /// <summary>
+        /// <see cref="CommandExportProperties"/>を実行するコマンドです。
+        /// </summary>
+        public ReactiveCommand ExportProperties { get; } = new();
+
+        /// <summary>
+        /// 各要素を出力します。
+        /// </summary>
+        private void CommandExportProperties()
+        {
+            var dialog = new SaveFileDialog
+            {
+                CheckPathExists = true,
+                FileName = $"{ContainerName.Value}.json",
+                DefaultExt = ".json",
+                Filter = "jsonファイル|*.json",
+            };
+            if (dialog.ShowDialog() != true) return;
+            try
+            {
+                data.ExportElementData(dialog.FileName);
+            }
+            catch (Exception e)
+            {
+                VmCommon.ShowErrorMessage("エクスポートに失敗しました", e);
+            }
+        }
+
+        /// <summary>
+        /// <see cref="CommandExportRawData"/>を実行するコマンドです。
+        /// </summary>
+        public ReactiveCommand ExportRawData { get; } = new();
+
+        /// <summary>
+        /// Rawデータを出力します。
+        /// </summary>
+        private void CommandExportRawData()
+        {
+            var dialog = new SaveFileDialog
+            {
+                CheckPathExists = true,
+                FileName = $"{ContainerName.Value}_Raw.csv",
+                DefaultExt = ".csv",
+                Filter = "csvファイル|*.csv",
+            };
+            if (dialog.ShowDialog() != true) return;
+            try
+            {
+                wrapper.ExportRawData(dialog.FileName);
+            }
+            catch (Exception e)
+            {
+                VmCommon.ShowErrorMessage("エクスポートに失敗しました", e);
+            }
+        }
+
+        /// <summary>
+        /// <see cref="CommandExportAnalyzedData"/>を実行するコマンドです。
+        /// </summary>
+        public ReactiveCommand ExportAnalyzedData { get; } = new();
+
+        /// <summary>
+        /// 解析済みデータを出力します。
+        /// </summary>
+        private void CommandExportAnalyzedData()
+        {
+            var dialog = new SaveFileDialog
+            {
+                CheckPathExists = true,
+                FileName = $"{ContainerName.Value}_Analyzed.csv",
+                DefaultExt = ".csv",
+                Filter = "csvファイル|*.csv",
+            };
+            if (dialog.ShowDialog() != true) return;
+            try
+            {
+                wrapper.ExportAnalyzedData(dialog.FileName);
+            }
+            catch (Exception e)
+            {
+                VmCommon.ShowErrorMessage("エクスポートに失敗しました", e);
+            }
+        }
+
+        /// <summary>
+        /// <see cref="CommandExportFasta"/>を実行するコマンドです。
+        /// </summary>
+        public ReactiveCommand ExportFasta { get; } = new();
+
+        /// <summary>
+        /// fasta形式として配列データを出力します。
+        /// </summary>
+        private void CommandExportFasta()
+        {
+            var dialog = new SaveFileDialog
+            {
+                CheckPathExists = true,
+                FileName = $"{ContainerName.Value}.fasta",
+                DefaultExt = ".fasta",
+                Filter = "fastaファイル|*.fasta",
+            };
+            if (dialog.ShowDialog() != true) return;
+            try
+            {
+                wrapper.ExportFasta(dialog.FileName);
+            }
+            catch (Exception e)
+            {
+                VmCommon.ShowErrorMessage("エクスポートに失敗しました", e);
+            }
         }
 
         #endregion File

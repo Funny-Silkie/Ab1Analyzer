@@ -35,10 +35,11 @@
             <MenuItem Header="ファイル(_F)">
                 <MenuItem Header="開く(_O)" InputGestureText="Ctrl+O" Command="{Binding Path=OpenFile}" />
                 <MenuItem Header="エクスポート(_E)">
-                    <MenuItem Header="メタデータ(_M)" />
-                    <MenuItem Header="プロパティ(_P)" />
-                    <MenuItem Header="Rawデータ(_R)" />
-                    <MenuItem Header="解析データ(_A)" />
+                    <MenuItem Header="メタデータ(_M)" Command="{Binding Path=ExportMetaData}" />
+                    <MenuItem Header="プロパティ(_P)" Command="{Binding Path=ExportProperties}" />
+                    <MenuItem Header="Rawデータ(_R)" Command="{Binding Path=ExportRawData}" />
+                    <MenuItem Header="解析データ(_A)" Command="{Binding Path=ExportAnalyzedData}" />
+                    <MenuItem Header="配列データ(_F)" Command="{Binding Path=ExportFasta}" />
                 </MenuItem>
                 <Separator />
                 <MenuItem Header="終了(_X)" InputGestureText="Ctrl+W" />

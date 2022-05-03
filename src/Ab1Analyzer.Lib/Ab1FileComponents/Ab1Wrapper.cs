@@ -143,5 +143,46 @@ namespace Ab1Analyzer
                 writer.WriteLine(current);
             }
         }
+
+        /// <summary>
+        /// 生データをエクスポートします。
+        /// </summary>
+        /// <param name="path">エクスポート先のパス</param>
+        public void ExportRawData(string path)
+        {
+            ExportSequence(RawData, path);
+        }
+
+        /// <summary>
+        /// 解析済みデータをエクスポートします。
+        /// </summary>
+        /// <param name="path">エクスポート先のパス</param>
+        public void ExportAnalyzedData(string path)
+        {
+            ExportSequence(AnalyzedData, path);
+        }
+
+        /// <summary>
+        /// 配列データをエクスポートします。
+        /// </summary>
+        /// <param name="data">エクスポートする配列データ</param>
+        /// <param name="path">エクスポート先のパス</param>
+        /// <exception cref="ArgumentNullException"><paramref name="data"/>がnull</exception>
+        private static void ExportSequence(SequenceData data, string path)
+        {
+            using var writer = new StreamWriter(path, false);
+            writer.WriteLine("A,T,G,C");
+            foreach ((short a, short t, short g, short c) in data)
+            {
+                writer.Write(a);
+                writer.Write(',');
+                writer.Write(t);
+                writer.Write(',');
+                writer.Write(g);
+                writer.Write(',');
+                writer.Write(c);
+                writer.WriteLine();
+            }
+        }
     }
 }
