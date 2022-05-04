@@ -1,11 +1,10 @@
-﻿using Microsoft.Win32;
+﻿using Livet.Messaging.IO;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using Reactive.Bindings;
 using System;
 using System.Linq;
-using System.Windows;
 
 namespace Ab1Analyzer.Visualizer.ViewModels
 {
@@ -117,7 +116,7 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             }
             catch (Exception e)
             {
-                VmCommon.ShowErrorMessage("ファイルの読み込みに失敗しました", e);
+                ShowError("ファイルの読み込みに失敗しました", e);
                 _ContainerName.Value = null;
                 _Sequence.Value = null;
                 ClearGraph(RawDataPlotModel.Value);
@@ -292,20 +291,13 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         public ReactiveCommand OpenFile { get; } = new();
 
         /// <summary>
-        /// ab1ファイルを読み込みます。
+        /// ABIFファイルを読み込みます。
         /// </summary>
         private void CommandOpenFile()
         {
-            var dialog = new OpenFileDialog
-            {
-                CheckFileExists = true,
-                CheckPathExists = true,
-                DefaultExt = ".ab1",
-                Filter = "ab1ファイル|*.ab1",
-                Multiselect = false,
-            };
-            if (dialog.ShowDialog() != true) return;
-            _OpenedFilePath.Value = dialog.FileName;
+            string path = OpenSingleFile("ABIF Files (*.ab1;*.abi;*.fsa)|*.ab1;*.abi;*.fsa|All Files (*.*)|*.*");
+            if (path == null) return;
+            _OpenedFilePath.Value = path;
         }
 
         /// <summary>
@@ -318,21 +310,15 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// </summary>
         private void CommandExportMetaData()
         {
-            var dialog = new SaveFileDialog
-            {
-                CheckPathExists = true,
-                FileName = $"{ContainerName.Value}.csv",
-                DefaultExt = ".csv",
-                Filter = "csvファイル|*.csv",
-            };
-            if (dialog.ShowDialog() != true) return;
+            string path = SaveFile("csv Files (*.csv)|*.csv|All Files (*.*)|*.*", $"{ContainerName.Value}_MetaData.csv");
+            if (path == null) return;
             try
             {
-                data.ExportBinaryMetaData(dialog.FileName);
+                data.ExportBinaryMetaData(path);
             }
             catch (Exception e)
             {
-                VmCommon.ShowErrorMessage("エクスポートに失敗しました", e);
+                ShowError("エクスポートに失敗しました", e);
             }
         }
 
@@ -346,21 +332,15 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// </summary>
         private void CommandExportProperties()
         {
-            var dialog = new SaveFileDialog
-            {
-                CheckPathExists = true,
-                FileName = $"{ContainerName.Value}.json",
-                DefaultExt = ".json",
-                Filter = "jsonファイル|*.json",
-            };
-            if (dialog.ShowDialog() != true) return;
+            string path = SaveFile("json Files (*.json)|*.json|All Files (*.*)|*.*", $"{ContainerName.Value}.json");
+            if (path == null) return;
             try
             {
-                data.ExportElementData(dialog.FileName);
+                data.ExportElementData(path);
             }
             catch (Exception e)
             {
-                VmCommon.ShowErrorMessage("エクスポートに失敗しました", e);
+                ShowError("エクスポートに失敗しました", e);
             }
         }
 
@@ -374,21 +354,15 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// </summary>
         private void CommandExportRawData()
         {
-            var dialog = new SaveFileDialog
-            {
-                CheckPathExists = true,
-                FileName = $"{ContainerName.Value}_Raw.csv",
-                DefaultExt = ".csv",
-                Filter = "csvファイル|*.csv",
-            };
-            if (dialog.ShowDialog() != true) return;
+            string path = SaveFile("csv Files (*.csv)|*.csv|All Files (*.*)|*.*", $"{ContainerName.Value}_RawData.csv");
+            if (path == null) return;
             try
             {
-                wrapper.ExportRawData(dialog.FileName);
+                wrapper.ExportRawData(path);
             }
             catch (Exception e)
             {
-                VmCommon.ShowErrorMessage("エクスポートに失敗しました", e);
+                ShowError("エクスポートに失敗しました", e);
             }
         }
 
@@ -402,21 +376,15 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// </summary>
         private void CommandExportAnalyzedData()
         {
-            var dialog = new SaveFileDialog
-            {
-                CheckPathExists = true,
-                FileName = $"{ContainerName.Value}_Analyzed.csv",
-                DefaultExt = ".csv",
-                Filter = "csvファイル|*.csv",
-            };
-            if (dialog.ShowDialog() != true) return;
+            string path = SaveFile("csv Files (*.csv)|*.csv|All Files (*.*)|*.*", $"{ContainerName.Value}_AnalyzedData.csv");
+            if (path == null) return;
             try
             {
-                wrapper.ExportAnalyzedData(dialog.FileName);
+                wrapper.ExportAnalyzedData(path);
             }
             catch (Exception e)
             {
-                VmCommon.ShowErrorMessage("エクスポートに失敗しました", e);
+                ShowError("エクスポートに失敗しました", e);
             }
         }
 
@@ -430,21 +398,15 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// </summary>
         private void CommandExportFasta()
         {
-            var dialog = new SaveFileDialog
-            {
-                CheckPathExists = true,
-                FileName = $"{ContainerName.Value}.fasta",
-                DefaultExt = ".fasta",
-                Filter = "fastaファイル|*.fasta",
-            };
-            if (dialog.ShowDialog() != true) return;
+            string path = SaveFile("fasta Files (*.fasta)|*.fasta|All Files (*.*)|*.*", $"{ContainerName.Value}.fasta");
+            if (path == null) return;
             try
             {
-                wrapper.ExportFasta(dialog.FileName);
+                wrapper.ExportFasta(path);
             }
             catch (Exception e)
             {
-                VmCommon.ShowErrorMessage("エクスポートに失敗しました", e);
+                ShowError("エクスポートに失敗しました", e);
             }
         }
 

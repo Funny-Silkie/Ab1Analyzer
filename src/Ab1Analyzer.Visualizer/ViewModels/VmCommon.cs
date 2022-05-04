@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using Livet.Messaging.IO;
 
 namespace Ab1Analyzer.Visualizer.ViewModels
 {
@@ -9,13 +8,13 @@ namespace Ab1Analyzer.Visualizer.ViewModels
     internal static class VmCommon
     {
         /// <summary>
-        /// エラーメッセージを表示します。
+        /// ファイルパスを指定しているかどうかを検証します。
         /// </summary>
-        /// <param name="message">メッセージ</param>
-        /// <param name="e">エラー</param>
-        internal static void ShowErrorMessage(string message, Exception e)
+        /// <param name="message">検証するメッセージ</param>
+        /// <returns><paramref name="message"/>が少なくとも一つ以上のファイルパスを指定していたらtrue，それ以外でfalse</returns>
+        internal static bool IsEmpty(this FileSelectionMessage message)
         {
-            MessageBox.Show($"{message}\n{e.GetType().FullName}: {e.Message}");
+            return message == null || message.Response == null || message.Response.Length == 0;
         }
     }
 }

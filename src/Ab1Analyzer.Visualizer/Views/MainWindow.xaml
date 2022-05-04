@@ -8,9 +8,30 @@
         xmlns:local="clr-namespace:Ab1Analyzer.Visualizer.Views"
         xmlns:beh="clr-namespace:Ab1Analyzer.Visualizer.Views.Behaviors"
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
         x:Name="window"
         Background="#F0F0F0" Title="{Binding Path=OpenedFilePath.Value, StringFormat=Ab1 Visualiser {0}}" Height="650" Width="1200">
+    <bh:Interaction.Triggers>
+        <l:InteractionMessageTrigger Messenger="{Binding Path=Messenger}" MessageKey="Message">
+            <l:InformationDialogInteractionMessageAction />
+        </l:InteractionMessageTrigger>
+        <l:InteractionMessageTrigger Messenger="{Binding Path=Messenger}" MessageKey="OpenFile">
+            <l:OpenFileDialogInteractionMessageAction />
+        </l:InteractionMessageTrigger>
+        <l:InteractionMessageTrigger Messenger="{Binding Path=Messenger}" MessageKey="SaveFile">
+            <l:SaveFileDialogInteractionMessageAction />
+        </l:InteractionMessageTrigger>
+        <l:InteractionMessageTrigger Messenger="{Binding Path=Messenger}" MessageKey="Close">
+            <l:WindowInteractionMessageAction>
+                <l:DirectInteractionMessage>
+                    <l:WindowActionMessage Action="Close" />
+                </l:DirectInteractionMessage>
+            </l:WindowInteractionMessageAction>
+        </l:InteractionMessageTrigger>
+    </bh:Interaction.Triggers>
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -42,7 +63,7 @@
                     <MenuItem Header="配列データ(_F)" Command="{Binding Path=ExportFasta}" />
                 </MenuItem>
                 <Separator />
-                <MenuItem Header="終了(_X)" InputGestureText="Ctrl+W" />
+                <MenuItem Header="終了(_X)" InputGestureText="Ctrl+W" Command="{Binding Path=CloseWindow}" />
             </MenuItem>
             <MenuItem Header="表示(_V)">
             </MenuItem>
@@ -82,5 +103,6 @@
     </Grid>
     <Window.InputBindings>
         <KeyBinding Gesture="Ctrl+O" Command="{Binding Path=OpenFile}" />
+        <KeyBinding Gesture="Ctrl+W" Command="{Binding Path=CloseWindow}" />
     </Window.InputBindings>
 </Window>
