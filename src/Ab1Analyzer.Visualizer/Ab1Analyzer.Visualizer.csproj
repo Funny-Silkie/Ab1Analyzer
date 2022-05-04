@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <OutPutType>WinExe</OutPutType>
-    <TargetFrameWork>net5.0-windows</TargetFrameWork>
+    <TargetFrameWork>net6.0-windows</TargetFrameWork>
     <OutputPath>$(SolutionDir)Build\$(Configuration)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
