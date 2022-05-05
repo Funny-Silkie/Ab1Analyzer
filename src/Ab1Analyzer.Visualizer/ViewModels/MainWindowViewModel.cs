@@ -39,7 +39,7 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// <summary>
         /// AnalyzedDataのプロットを取得します。
         /// </summary>
-        public PlotViewModel AnalyzedDataPlot { get; }
+        public AnalyzedDataPlotViewModel AnalyzedDataPlot { get; }
 
         /// <summary>
         /// 配列を取得します。
@@ -69,6 +69,11 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         public ReactiveProperty<bool> ShowC { get; } = CreateReactiveProperty(true);
 
         /// <summary>
+        /// ピークのグラフを見せるかどうかを表す値を取得または設定します。
+        /// </summary>
+        public ReactiveProperty<bool> ShowPeaks { get; } = CreateReactiveProperty(false);
+
+        /// <summary>
         /// <see cref="MainWindowViewModel"/>の新しいインスタンスを初期化します。
         /// </summary>
         public MainWindowViewModel()
@@ -76,7 +81,7 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             OpenedFilePath = _OpenedFilePath.ToReadOnlyReactiveProperty();
             ContainerName = _ContainerName.ToReadOnlyReactiveProperty();
             RawDataPlot = new PlotViewModel("RawData");
-            AnalyzedDataPlot = new PlotViewModel("AnalyzedData");
+            AnalyzedDataPlot = new AnalyzedDataPlotViewModel();
             Sequence = _Sequence.ToReadOnlyReactiveProperty();
 
             _OpenedFilePath.Subscribe(OnOpenedFilePathChanged);
@@ -84,6 +89,7 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             ShowT.Subscribe(OnShowTChanged);
             ShowG.Subscribe(OnShowGChanged);
             ShowC.Subscribe(OnShowCChanged);
+            ShowPeaks.Subscribe(OnShowPeaksChanged);
         }
 
         /// <summary>
@@ -94,9 +100,13 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         {
             if (value == null)
             {
+                data = null;
+                wrapper = null;
                 _ContainerName.Value = null;
                 _Sequence.Value = null;
+                RawDataPlot.SetData(data, wrapper);
                 RawDataPlot.ClearGraph();
+                AnalyzedDataPlot.SetData(data, wrapper);
                 AnalyzedDataPlot.ClearGraph();
                 return;
             }
@@ -104,7 +114,9 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             {
                 data = Ab1Data.Create(value);
                 wrapper = new Ab1Wrapper(data);
+                RawDataPlot.SetData(data, wrapper);
                 RawDataPlot.UpdateGraph(wrapper.RawData);
+                AnalyzedDataPlot.SetData(data, wrapper);
                 AnalyzedDataPlot.UpdateGraph(wrapper.AnalyzedData);
                 _ContainerName.Value = wrapper.ContainerName;
                 _Sequence.Value = wrapper.Sequence;
@@ -112,9 +124,13 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             catch (Exception e)
             {
                 ShowError("ファイルの読み込みに失敗しました", e);
+                data = null;
+                wrapper = null;
                 _ContainerName.Value = null;
                 _Sequence.Value = null;
+                RawDataPlot.SetData(data, wrapper);
                 RawDataPlot.ClearGraph();
+                AnalyzedDataPlot.SetData(data, wrapper);
                 AnalyzedDataPlot.ClearGraph();
             }
         }
@@ -157,6 +173,15 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         {
             RawDataPlot.ShowC.Value = value;
             AnalyzedDataPlot.ShowC.Value = value;
+        }
+
+        /// <summary>
+        /// <see cref="ShowPeaks"/>が変更されたときに実行されます。
+        /// </summary>
+        /// <param name="value">設定された値</param>
+        private void OnShowPeaksChanged(bool value)
+        {
+            AnalyzedDataPlot.ShowPeaks.Value = value;
         }
 
         #region Commands

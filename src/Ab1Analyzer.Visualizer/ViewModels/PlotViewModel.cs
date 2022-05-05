@@ -1,4 +1,5 @@
-﻿using OxyPlot;
+﻿using Ab1Analyzer.Visualizer.Models;
+using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using Reactive.Bindings;
@@ -23,9 +24,34 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// </summary>
         protected const string YAxisKey = "Y-Axis";
 
+        /// <summary>
+        /// ab1ファイルのデータを取得します。
+        /// </summary>
+        protected Ab1Data Data { get; private set; }
+
+        /// <summary>
+        /// <see cref="Data"/>のラッパーを取得します。
+        /// </summary>
+        protected Ab1Wrapper Wrapper { get; private set; }
+
+        /// <summary>
+        /// Aの折れ線グラフを取得します。
+        /// </summary>
         protected LineSeries SeriesA { get; private set; }
+
+        /// <summary>
+        /// Tの折れ線グラフを取得します。
+        /// </summary>
         protected LineSeries SeriesT { get; private set; }
+
+        /// <summary>
+        /// Gの折れ線グラフを取得します。
+        /// </summary>
         protected LineSeries SeriesG { get; private set; }
+
+        /// <summary>
+        /// Cの折れ線グラフを取得します。
+        /// </summary>
         protected LineSeries SeriesC { get; private set; }
 
         /// <summary>
@@ -60,7 +86,7 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         public PlotViewModel(string title)
         {
             Model = CreateReadOnlyProperty(new PlotModel());
-            InitPlotModel(Model.Value, title);
+            InitPlotModel(title);
 
             ShowA.Subscribe(OnShowAChanged);
             ShowT.Subscribe(OnShowTChanged);
@@ -109,15 +135,24 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         }
 
         /// <summary>
-        /// <see cref="PlotModel"/>を初期化します。
+        /// <see cref="Data"/>と<see cref="Wrapper"/>を設定します。
         /// </summary>
-        /// <param name="model">初期化する<see cref="PlotModel"/>のインスタンス</param>
-        /// <param name="title">設定するタイトル</param>
-        protected virtual void InitPlotModel(PlotModel model, string title)
+        /// <param name="data">設定する<see cref="Ab1Data"/></param>
+        /// <param name="wrapper">設定する<see cref="Ab1Wrapper"/></param>
+        public void SetData(Ab1Data data, Ab1Wrapper wrapper)
         {
-            model.Title = title;
-            // X軸
-            model.Axes.Add(new LinearAxis()
+            Data = data;
+            Wrapper = wrapper;
+        }
+
+        /// <summary>
+        /// <see cref="Model"/>を初期化します。
+        /// </summary>
+        /// <param name="title">設定するタイトル</param>
+        protected virtual void InitPlotModel(string title)
+        {
+            Model.Value.Title = title;
+            Model.Value.Axes.Add(new LinearAxis()
             {
                 Key = XAxisKey,
                 Position = AxisPosition.Bottom,
@@ -125,8 +160,7 @@ namespace Ab1Analyzer.Visualizer.ViewModels
                 MinorGridlineStyle = LineStyle.Dash,
                 Minimum = 0,
             });
-            // Y軸
-            model.Axes.Add(new LinearAxis()
+            Model.Value.Axes.Add(new LinearAxis()
             {
                 Key = YAxisKey,
                 Position = AxisPosition.Left,
@@ -136,23 +170,27 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             SeriesA = new LineSeries
             {
                 Color = OxyColor.FromRgb(0, 255, 0),
+                IsVisible = ShowA.Value,
             };
             SeriesT = new LineSeries
             {
                 Color = OxyColor.FromRgb(255, 0, 0),
+                IsVisible = ShowT.Value,
             };
             SeriesG = new LineSeries
             {
                 Color = OxyColor.FromRgb(150, 150, 0),
+                IsVisible = ShowG.Value,
             };
             SeriesC = new LineSeries
             {
                 Color = OxyColor.FromRgb(0, 0, 255),
+                IsVisible = ShowC.Value,
             };
-            model.Series.Add(SeriesA);
-            model.Series.Add(SeriesT);
-            model.Series.Add(SeriesG);
-            model.Series.Add(SeriesC);
+            Model.Value.Series.Add(SeriesA);
+            Model.Value.Series.Add(SeriesT);
+            Model.Value.Series.Add(SeriesG);
+            Model.Value.Series.Add(SeriesC);
         }
 
         /// <summary>
@@ -170,24 +208,24 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// <param name="sequence">表示するシーケンスデータ</param>
         public virtual void UpdateGraph(SequenceData sequence)
         {
-            short min = 0;
-            short max = 0;
-
             SeriesA.Points.Clear();
             SeriesT.Points.Clear();
             SeriesG.Points.Clear();
             SeriesC.Points.Clear();
 
-            for (int i = 0; i < sequence.Count; i++)
+            short min = 0;
+            short max = 0;
+
+            for (short i = 0; i < sequence.Count; i++)
             {
                 (short a, short t, short g, short c) = sequence[i];
-                SeriesA.Points.Add(new DataPoint(i, a));
-                SeriesT.Points.Add(new DataPoint(i, t));
-                SeriesG.Points.Add(new DataPoint(i, g));
-                SeriesC.Points.Add(new DataPoint(i, c));
+                short imax = Common.Max(a, t, g, c);
+                short imin = Common.Min(a, t, g, c);
 
-                min = new[] { min, a, t, g, c }.Min();
-                max = new[] { max, a, t, g, c }.Max();
+                AddPoint(i, a, t, g, c, imax, imin);
+
+                max = Math.Max(imax, max);
+                min = Math.Min(imin, min);
             }
 
             LinearAxis xAxis = (LinearAxis)Model.Value.GetAxis(XAxisKey);
@@ -196,6 +234,24 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             yAxis.Minimum = min;
             yAxis.Maximum = max;
             Model.Value.InvalidatePlot(true);
+        }
+
+        /// <summary>
+        /// グラフの点を登録します。
+        /// </summary>
+        /// <param name="i">データのインデックス</param>
+        /// <param name="a">Aのデータ</param>
+        /// <param name="t">Tのデータ</param>
+        /// <param name="g">Gのデータ</param>
+        /// <param name="c">Cのデータ</param>
+        /// <param name="imax"><paramref name="a"/>，<paramref name="t"/>，<paramref name="g"/>，<paramref name="c"/>の中の最大値</param>
+        /// <param name="imin"><paramref name="a"/>，<paramref name="t"/>，<paramref name="g"/>，<paramref name="c"/>の中の最小値</param>
+        protected virtual void AddPoint(short i, short a, short t, short g, short c, short imax, short imin)
+        {
+            SeriesA.Points.Add(new DataPoint(i, a));
+            SeriesT.Points.Add(new DataPoint(i, t));
+            SeriesG.Points.Add(new DataPoint(i, g));
+            SeriesC.Points.Add(new DataPoint(i, c));
         }
     }
 }
