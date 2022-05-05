@@ -21,8 +21,7 @@
         /// <inheritdoc/>
         protected override string ParseInternal(BitInfo bytes)
         {
-            byte length = bytes.ToByte(0);
-            return bytes.ToASCIIString(1, length);
+            return bytes.ToASCIIString(1);
         }
     }
 }

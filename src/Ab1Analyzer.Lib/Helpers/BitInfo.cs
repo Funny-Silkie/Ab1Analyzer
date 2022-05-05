@@ -11,6 +11,11 @@ namespace Ab1Analyzer
         private readonly byte[] buffer;
 
         /// <summary>
+        /// バイト配列の長さを取得します。
+        /// </summary>
+        internal int DataSize => buffer.Length;
+
+        /// <summary>
         /// <see cref="BitInfo"/>の新しいインスタンスを初期化します。
         /// </summary>
         /// <exception cref="ArgumentNullException"><see cref="buffer"/>がnull</exception>

@@ -23,9 +23,7 @@
         /// <inheritdoc/>
         protected override string ParseInternal(BitInfo bytes)
         {
-            string value = bytes.ToASCIIString();
-            int length = value.IndexOf(NULL_CHARACTER);
-            return value.Substring(0, length);
+            return bytes.ToASCIIString(0, bytes.DataSize - 1);
         }
     }
 }
