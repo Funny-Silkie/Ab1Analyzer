@@ -3,6 +3,7 @@ using Livet.Messaging;
 using Livet.Messaging.IO;
 using Reactive.Bindings;
 using System;
+using System.Reactive.Linq;
 using System.Windows;
 
 namespace Ab1Analyzer.Visualizer.ViewModels
@@ -38,6 +39,30 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         protected ViewModelBase()
         {
             InitializeCommands();
+        }
+
+        /// <summary>
+        /// <see cref="ReactiveProperty{T}"/>の新しいインスタンスを生成します。
+        /// </summary>
+        /// <typeparam name="T">プロパティの型</typeparam>
+        /// <param name="initValue">初期値</param>
+        /// <param name="mode">プロパティの挙動の設定</param>
+        /// <returns><see cref="ReactiveProperty{T}"/>の新しいインスタンス</returns>
+        protected static ReactiveProperty<T> CreateReactiveProperty<T>(T initValue = default, ReactivePropertyMode mode = ReactivePropertyMode.Default ^ ReactivePropertyMode.RaiseLatestValueOnSubscribe)
+        {
+            return new ReactiveProperty<T>(initValue, mode);
+        }
+
+        /// <summary>
+        /// <see cref="ReadOnlyReactiveProperty{T}"/>の新しいインスタンスを生成します。
+        /// </summary>
+        /// <typeparam name="T">プロパティの型</typeparam>
+        /// <param name="initValue">初期値</param>
+        /// <param name="mode">プロパティの挙動の設定</param>
+        /// <returns><see cref="ReadOnlyReactiveProperty{T}"/>の新しいインスタンス</returns>
+        protected static ReadOnlyReactiveProperty<T> CreateReadOnlyProperty<T>(T initValue, ReactivePropertyMode mode = ReactivePropertyMode.Default ^ ReactivePropertyMode.RaiseLatestValueOnSubscribe)
+        {
+            return new ReadOnlyReactiveProperty<T>(Observable.Return(initValue), initValue, mode);
         }
 
         #region MessageBox
