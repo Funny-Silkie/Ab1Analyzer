@@ -9,6 +9,11 @@ namespace Ab1Analyzer.Visualizer.Models
     internal static class Common
     {
         /// <summary>
+        /// コマンドライン引数を取得または設定します。
+        /// </summary>
+        public static string[] Args { get; set; }
+
+        /// <summary>
         /// 最大値を求めます。
         /// </summary>
         /// <param name="values">入力値</param>

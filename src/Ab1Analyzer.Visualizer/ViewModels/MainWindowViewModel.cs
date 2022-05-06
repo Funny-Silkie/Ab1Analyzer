@@ -1,4 +1,5 @@
-﻿using Livet.Messaging.IO;
+﻿using Ab1Analyzer.Visualizer.Models;
+using Livet.Messaging.IO;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -129,6 +130,13 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             ShowC.Subscribe(OnShowCChanged);
             ShowPeaks.Subscribe(OnShowPeaksChanged);
             ShowPeaksAdv.Subscribe(OnShowPeaksAdvChanged);
+
+            string[] args = Common.Args;
+            if (args?.Length > 0)
+            {
+                _OpenedFilePath.Value = args[0];
+                ShowMessage(args[0], "AAA");
+            }
         }
 
         /// <summary>

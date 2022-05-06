@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ab1Analyzer.Visualizer.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -11,8 +12,7 @@ namespace Ab1Analyzer.Visualizer
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var args = e.Args;
-
+            Common.Args = e.Args;
         }
     }
 }

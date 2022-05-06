@@ -198,7 +198,12 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// </summary>
         public void ClearGraph()
         {
-            foreach (var series in Model.Value.Series) ((LineSeries)series).Points.Clear();
+            foreach (var series in Model.Value.Series)
+                switch (series)
+                {
+                    case DataPointSeries s: s.Points.Clear(); break;
+                    case ScatterSeries s: s.Points.Clear(); break;
+                }
             Model.Value.InvalidatePlot(true);
         }
 
