@@ -55,7 +55,7 @@
         <Menu Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0">
             <MenuItem Header="ファイル(_F)">
                 <MenuItem Header="開く(_O)" InputGestureText="Ctrl+O" Command="{Binding Path=OpenFile}" />
-                <MenuItem Header="エクスポート(_E)">
+                <MenuItem Header="エクスポート(_E)" IsEnabled="{Binding Path=HasFile.Value}">
                     <MenuItem Header="メタデータ(_M)" Command="{Binding Path=ExportMetaData}" />
                     <MenuItem Header="プロパティ(_P)" Command="{Binding Path=ExportProperties}" />
                     <MenuItem Header="Rawデータ(_R)" Command="{Binding Path=ExportRawData}" />
@@ -72,36 +72,63 @@
         <GridSplitter Background="#E0E0E0" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Height="5" />
         <oxy:PlotView Margin="0,0" Grid.Row="3" Model="{Binding Path=AnalyzedDataPlot.Model.Value}" />
         <GridSplitter Background="#E0E0E0" Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" HorizontalAlignment="Stretch" Width="5" />
-        <ScrollViewer Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Grid Margin="15">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="15" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="プレート名:" />
-                <Rectangle Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#00FF00" Width="15" Height="15" />
-                <Rectangle Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#FF0000" Width="15" Height="15" />
-                <Rectangle Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#949400" Width="15" Height="15" />
-                <Rectangle Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#0000FF" Width="15" Height="15" />
-                <Polygon Grid.Column="0" Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#000000" Points="0,0 15,0 7.5,15" />
-                <TextBlock Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=ContainerName.Value}" />
-                <CheckBox Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Content="A" IsChecked="{Binding Path=ShowA.Value}" />
-                <CheckBox Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Content="T" IsChecked="{Binding Path=ShowT.Value}" />
-                <CheckBox Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Content="G" IsChecked="{Binding Path=ShowG.Value}" />
-                <CheckBox Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Content="C" IsChecked="{Binding Path=ShowC.Value}" />
-                <CheckBox Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Peak" IsChecked="{Binding Path=ShowPeaks.Value}" />
-            </Grid>
-        </ScrollViewer>
+        <StackPanel Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Margin="5">
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=ContainerName.Value, StringFormat=プレート名：{0}}" Height="25" />
+            <Expander Header="グラフ凡例" BorderThickness="1" BorderBrush="#A0A0A0" IsExpanded="True">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Grid Margin="5" Background="#F8F8F8" IsEnabled="{Binding Path=HasFile.Value}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <Rectangle Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#00FF00" Width="15" Height="15" />
+                        <Rectangle Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#FF0000" Width="15" Height="15" />
+                        <Rectangle Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#949400" Width="15" Height="15" />
+                        <Rectangle Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#0000FF" Width="15" Height="15" />
+                        <Polygon Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#000000" Points="0,0 15,0 7.5,15" />
+                        <Polygon Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#FF64FF" Points="0,0 15,0 7.5,15" />
+                        <CheckBox Grid.Column="3" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="A" IsChecked="{Binding Path=ShowA.Value}" />
+                        <CheckBox Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Content="T" IsChecked="{Binding Path=ShowT.Value}" />
+                        <CheckBox Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Content="G" IsChecked="{Binding Path=ShowG.Value}" />
+                        <CheckBox Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Content="C" IsChecked="{Binding Path=ShowC.Value}" />
+                        <CheckBox Grid.Column="3" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Peaks" IsChecked="{Binding Path=ShowPeaks.Value}" />
+                        <CheckBox Grid.Column="3" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Peaks (Adv)" IsChecked="{Binding Path=ShowPeaksAdv.Value}" />
+                    </Grid>
+                </ScrollViewer>
+            </Expander>
+            <Expander Header="再解析" BorderThickness="1" BorderBrush="#A0A0A0" IsExpanded="True">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Grid Margin="5" Background="#F8F8F8" IsEnabled="{Binding Path=HasFile.Value}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="開始:" />
+                        <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Text="終了:" />
+                        <local:NumericUpDown Grid.Column="3" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Minimum="0" Maximum="{Binding Path=AnalyzeStartMax.Value, Mode=TwoWay}" Value="{Binding Path=AnalyzeStart.Value}" Width="100" />
+                        <local:NumericUpDown Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Minimum="{Binding Path=AnalyzeEndMin.Value}" Maximum="{Binding Path=AnalyzeEndMax.Value}" Value="{Binding Path=AnalyzeEnd.Value, Mode=TwoWay}" Width="100" />
+                        <Button Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" Content="再解析" Command="{Binding Path=AnalyzeAdv}" Width="100" />
+                    </Grid>
+                </ScrollViewer>
+            </Expander>
+        </StackPanel>
     </Grid>
     <Window.InputBindings>
         <KeyBinding Gesture="Ctrl+O" Command="{Binding Path=OpenFile}" />

@@ -140,12 +140,26 @@ namespace Ab1Analyzer
             using var writer = new StreamWriter(path, false);
             writer.Write("> ");
             writer.WriteLine(ContainerName);
-            string[] array = Regex.Split(Sequence.ToString(), $"({new string('.', 50)})");
+            string[] array;
+            array = Regex.Split(Sequence.ToString(), $"({new string('.', 50)})");
             for (int i = 0; i < array.Length; i++)
             {
                 string current = array[i].Trim();
                 if (string.IsNullOrEmpty(current)) continue;
                 writer.WriteLine(current);
+            }
+            if (AdvancedAnalysisData != null)
+            {
+                writer.Write("> ");
+                writer.Write(ContainerName);
+                writer.WriteLine("_ReAnalyzed");
+                array = Regex.Split(AdvancedAnalysisData.Sequence.ToString(), $"({new string('.', 50)})");
+                for (int i = 0; i < array.Length; i++)
+                {
+                    string current = array[i].Trim();
+                    if (string.IsNullOrEmpty(current)) continue;
+                    writer.WriteLine(current);
+                }
             }
         }
 
