@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -104,6 +104,11 @@ namespace Ab1Analyzer
         private DNASequence _sequence;
 
         /// <summary>
+        /// 追解析データを取得します。
+        /// </summary>
+        public AnalysisData AdvancedAnalysisData { get; private set; }
+
+        /// <summary>
         /// <see cref="Ab1Wrapper"/>の新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="file">使用する<see cref="Ab1Data"/>のインスタンス</param>
@@ -183,6 +188,21 @@ namespace Ab1Analyzer
                 writer.Write(c);
                 writer.WriteLine();
             }
+        }
+
+        /// <summary>
+        /// 塩基配列の読み取りを行い，<see cref="AdvancedAnalysisData"/>に格納します。
+        /// </summary>
+        /// <param name="start">開始インデックス</param>
+        /// <param name="end">終了インデックス -1で全域</param>
+        /// <param name="overWrite">既に<see cref="AdvancedAnalysisData"/>を上書きする</param>
+        /// <exception cref="ArgumentException"><paramref name="end"/>が<paramref name="start"/>未満</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="start"/>が0未満 -または- <paramref name="end"/>が-2以下か<see cref="AnalyzedData"/>の要素数以上</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="overWrite"/>がfalseであり<see cref="AdvancedAnalysisData"/>が既に存在する</exception>
+        public void AnalyzeSequence(int start = 0, int end = -1, bool overWrite = true)
+        {
+            if (!overWrite && AdvancedAnalysisData != null) throw new InvalidOperationException("既に解析データが存在します");
+            AdvancedAnalysisData = AnalysisData.Create(AnalyzedData, start, end);
         }
     }
 }
