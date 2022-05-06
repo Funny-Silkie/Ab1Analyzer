@@ -132,11 +132,7 @@ namespace Ab1Analyzer.Visualizer.ViewModels
             ShowPeaksAdv.Subscribe(OnShowPeaksAdvChanged);
 
             string[] args = Common.Args;
-            if (args?.Length > 0)
-            {
-                _OpenedFilePath.Value = args[0];
-                ShowMessage(args[0], "AAA");
-            }
+            if (args?.Length > 0) _OpenedFilePath.Value = args[0];
         }
 
         /// <summary>
