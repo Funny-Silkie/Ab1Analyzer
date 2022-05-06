@@ -44,9 +44,9 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         /// <summary>
         /// 配列を取得します。
         /// </summary>
-        public ReadOnlyReactiveProperty<string> Sequence { get; }
+        public ReadOnlyReactiveProperty<DNASequence> Sequence { get; }
 
-        private ReactiveProperty<string> _Sequence = new();
+        private ReactiveProperty<DNASequence> _Sequence = new();
 
         /// <summary>
         /// Aのグラフを見せるかどうかを表す値を取得または設定します。

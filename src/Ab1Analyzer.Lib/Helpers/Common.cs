@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Ab1Analyzer
@@ -8,16 +9,24 @@ namespace Ab1Analyzer
     /// </summary>
     internal static class Common
     {
-        internal static void OutputField<T>(T value, string fieldName)
+        /// <summary>
+        /// 最大値を求めます。
+        /// </summary>
+        /// <param name="values">入力値</param>
+        /// <returns><paramref name="values"/>のうち最小の値</returns>
+        public static T Max<T>(params T[] values) where T : IComparable<T>
         {
-            const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField;
-            Console.WriteLine("{0}: {1}", fieldName, typeof(T).GetField(fieldName, flags)?.GetValue(value));
+            return values.Max();
         }
 
-        internal static void OutputProperty<T>(T value, string propertyName)
+        /// <summary>
+        /// 最小値を求めます。
+        /// </summary>
+        /// <param name="values">入力値</param>
+        /// <returns><paramref name="values"/>のうち最小の値</returns>
+        public static T Min<T>(params T[] values) where T : IComparable<T>
         {
-            const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty;
-            Console.WriteLine("{0}: {1}", propertyName, typeof(T).GetProperty(propertyName, flags)?.GetValue(value));
+            return values.Min();
         }
     }
 }

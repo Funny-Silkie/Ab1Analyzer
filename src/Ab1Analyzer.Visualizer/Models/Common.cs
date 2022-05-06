@@ -6,7 +6,7 @@ namespace Ab1Analyzer.Visualizer.Models
     /// <summary>
     /// 共通処理を実装します。
     /// </summary>
-    public static class Common
+    internal static class Common
     {
         /// <summary>
         /// 最大値を求めます。

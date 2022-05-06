@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -77,7 +77,7 @@ namespace Ab1Analyzer
                 if (_peaks == null)
                 {
                     Ab1Directory ploc = GetOrThrow(Tag_PLOC, 2);
-                    _peaks = Array.ConvertAll(ploc.Elements, x => (short)x);
+                    _peaks = ploc.Elements.ConvertAll(x => (short)x);
                 }
                 return _peaks;
             }
@@ -88,20 +88,20 @@ namespace Ab1Analyzer
         /// <summary>
         /// 推測した配列データを取得します。
         /// </summary>
-        public string Sequence
+        public DNASequence Sequence
         {
             get
             {
                 if (_sequence == null)
                 {
                     Ab1Directory pbas = GetOrThrow(Tag_PBAS, 2);
-                    _sequence = Encoding.ASCII.GetString(Array.ConvertAll(pbas.Elements, x => (byte)(sbyte)x));
+                    if (!DNASequence.TryParse(Encoding.ASCII.GetString(pbas.Elements.ConvertAll(x => (byte)(sbyte)x)), out _sequence)) _sequence = new DNASequence();
                 }
                 return _sequence;
             }
         }
 
-        private string _sequence;
+        private DNASequence _sequence;
 
         /// <summary>
         /// <see cref="Ab1Wrapper"/>の新しいインスタンスを初期化します。
@@ -135,7 +135,7 @@ namespace Ab1Analyzer
             using var writer = new StreamWriter(path, false);
             writer.Write("> ");
             writer.WriteLine(ContainerName);
-            string[] array = Regex.Split(Sequence, $"({new string('.', 50)})");
+            string[] array = Regex.Split(Sequence.ToString(), $"({new string('.', 50)})");
             for (int i = 0; i < array.Length; i++)
             {
                 string current = array[i].Trim();
