@@ -46,6 +46,7 @@ namespace Ab1Analyzer
         /// <returns><see cref="AnalysisData"/>の新しいインスタンス</returns>
         public static AnalysisData Create(SequenceData analyzedData, int start, int end)
         {
+            const int Threshold = 1;
             if (analyzedData == null) throw new ArgumentNullException(nameof(analyzedData));
             if (start < 0) throw new ArgumentOutOfRangeException(nameof(start), "引数が0未満です");
             if (end == -1) end += analyzedData.Count;
@@ -58,7 +59,7 @@ namespace Ab1Analyzer
             short prevMax = 0;
             int prevDeviation = 1;
 
-            for (int i = start; i < analyzedData.Count; i++)
+            for (int i = start; i < end; i++)
             {
                 (short a, short t, short g, short c) = analyzedData[i];
                 short max = Common.Max(a, t, g, c);
@@ -67,10 +68,10 @@ namespace Ab1Analyzer
                 {
                     peaks.Add((short)i);
                     var dna = new DNABase();
-                    if (max == a) dna += DNABase.A;
-                    if (max == t) dna += DNABase.T;
-                    if (max == g) dna += DNABase.G;
-                    if (max == c) dna += DNABase.C;
+                    if (a >= max / Threshold) dna += DNABase.A;
+                    if (t >= max / Threshold) dna += DNABase.T;
+                    if (g >= max / Threshold) dna += DNABase.G;
+                    if (c >= max / Threshold) dna += DNABase.C;
                     sequence.Add(dna);
                 }
                 prevDeviation = deviation;

@@ -288,7 +288,7 @@ namespace Ab1Analyzer.Visualizer.ViewModels
         {
             try
             {
-                wrapper.AnalyzeSequence();
+                wrapper.AnalyzeSequence(AnalyzeStart.Value, AnalyzeEnd.Value);
                 AnalyzedDataPlot.UpdateGraph(wrapper.AnalyzedData);
             }
             catch (Exception e)
