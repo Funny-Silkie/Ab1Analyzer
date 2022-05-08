@@ -46,7 +46,7 @@ namespace Ab1Analyzer
         public override readonly int GetHashCode() => HashCode.Combine(year, month, day);
 
         /// <inheritdoc/>
-        public override readonly string ToString() => $"{year}/{month}/{day}";
+        public override readonly string ToString() => string.Format("{0:00}/{1:00}/{2:00}", year, month, day);
 
         public static bool operator ==(Date left, Date right) => left.Equals(right);
 
