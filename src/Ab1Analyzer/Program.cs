@@ -8,7 +8,7 @@ namespace Ab1Analyzer
 
         private static void Main(string[] args)
         {
-            if (args.Length > 0) CommandBase.Commands.GetCommand<ReadFileCommand>().Execute(data, args);
+            if (args.Length > 0) CommandBase.Commands.GetCommand<LoadCommand>().Execute(data, args);
             while (!data.Exit)
             {
                 Console.Write($"{data.FilePath}> ");

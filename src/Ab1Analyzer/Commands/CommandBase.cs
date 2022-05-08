@@ -66,7 +66,33 @@ namespace Ab1Analyzer
         /// </summary>
         /// <param name="data">データ</param>
         /// <param name="args">コマンド引数</param>
-        public abstract void Execute(ProcessData data, string[] args);
+        /// <returns>実行が終了したらtrue，それ以外でfalse</returns>
+        public virtual bool Execute(ProcessData data, string[] args)
+        {
+            if (args.Length > 0)
+            {
+                string help = IsOptionName(args[0]);
+                if (help == "h" || help == "help")
+                {
+                    Console.WriteLine(GetHelp(false));
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// オプション名を表すかどうか検証します。
+        /// </summary>
+        /// <param name="value">検証する値</param>
+        /// <returns><paramref name="value"/>がオプション名であったらオプション名，それ以外でnull</returns>
+        protected static string IsOptionName(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return null;
+            if (value.StartsWith("-") && value.Length == 2) return value[1].ToString();
+            if (value.StartsWith("--")) return value[2..];
+            return null;
+        }
 
         /// <summary>
         /// ヘルプメッセージを生成します。
@@ -82,7 +108,10 @@ namespace Ab1Analyzer
             bool onlyAbstract)
         {
             var builder = new StringBuilder();
-            builder.Append("> ");
+            builder.Append("--");
+            builder.Append(Name);
+            builder.AppendLine("--");
+            builder.AppendLine();
             builder.Append(Name);
             if (args != null)
                 for (int i = 0; i < args.Length; i++)
@@ -95,7 +124,7 @@ namespace Ab1Analyzer
             builder.AppendLine(abst);
             if (!onlyAbstract)
             {
-                if (args != null)
+                if (args != null && args.Length > 0)
                 {
                     builder.AppendLine("--Arguments--");
                     for (int i = 0; i < args.Length; i++)
@@ -108,10 +137,10 @@ namespace Ab1Analyzer
                         builder.AppendLine();
                     }
                 }
-                builder.AppendLine();
-                builder.AppendLine("--Options--");
-                if (options != null)
+                if (options != null && options.Length > 0)
                 {
+                    builder.AppendLine();
+                    builder.AppendLine("--Options--");
                     IEnumerable<(string, string)> opt = options
                         .Append(("-h, --help", "ヘルプを表示します。"))
                         .OrderBy(x => x.Item1);

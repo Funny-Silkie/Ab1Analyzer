@@ -22,9 +22,12 @@
         }
 
         /// <inheritdoc/>
-        public override void Execute(ProcessData data, string[] args)
+        public override bool Execute(ProcessData data, string[] args)
         {
+            if (base.Execute(data, args)) return true;
+
             data.Exit = true;
+            return true;
         }
     }
 }

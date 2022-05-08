@@ -6,15 +6,15 @@ namespace Ab1Analyzer
     /// <summary>
     /// ABIFファイルを読み込むコマンドです。
     /// </summary>
-    public class ReadFileCommand : CommandBase
+    public class LoadCommand : CommandBase
     {
         /// <inheritdoc/>
         public override string Name => "load";
 
         /// <summary>
-        /// <see cref="ReadFileCommand"/>の新しいインスタンスを初期化します。
+        /// <see cref="LoadCommand"/>の新しいインスタンスを初期化します。
         /// </summary>
-        public ReadFileCommand()
+        public LoadCommand()
         {
         }
 
@@ -25,15 +25,18 @@ namespace Ab1Analyzer
         }
 
         /// <inheritdoc/>
-        public override void Execute(ProcessData data, string[] args)
+        public override bool Execute(ProcessData data, string[] args)
         {
-            if (!CheckLength(args, 1)) return;
+            if (base.Execute(data, args)) return true;
+
+            if (!CheckLength(args, 1)) return true;
             string path = args[0];
             if (!File.Exists(path))
             {
                 Console.WriteLine($"パス：\"{path}\"が存在しません。");
-                return;
+                return true;
             }
+            path = Path.GetFullPath(path);
             Ab1Data ab1;
             try
             {
@@ -42,11 +45,12 @@ namespace Ab1Analyzer
             catch (Exception e)
             {
                 ShowError("ファイルの読み込みに失敗しました。", e);
-                return;
+                return true;
             }
             data.FilePath = path;
             data.Data = ab1;
             data.Wrapper = new Ab1Wrapper(ab1);
+            return true;
         }
     }
 }
