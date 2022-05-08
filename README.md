@@ -6,7 +6,7 @@ ThermoFisher社の[Applied Biosystems SeqStudio Genetic Analyzer](https://www.th
 
 - [Ab1Analyzer](./docs/manuals/cui/index.md)  
 CUI版解析ソフト。マルチプラットフォーム。
-- Ab1Analyzer.Lib  
+- [Ab1Analyzer.Lib](./docs/manuals/library/index.md)  
 ABIFファイル解析ライブラリ。
 - [Ab1Analyzer.Visualizer](./docs/manuals/gui/index.md)  
 GUI版解析ソフト。Windows依存。

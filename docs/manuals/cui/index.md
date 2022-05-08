@@ -22,7 +22,7 @@ help
 load <ABIF file name>
 ```
 
-ABIFファイル（abi, ab1, fsa）を読み込みます。  
+ABIFファイル（`.abi`, `.ab1`, `.fsa`）を読み込みます。  
 ※ファイルを読み込んでいる状態でないと実行できないコマンドが多く存在します。
 
 ### Arguments
