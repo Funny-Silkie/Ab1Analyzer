@@ -31,6 +31,11 @@ namespace Ab1Analyzer
         {
             if (base.Execute(data, args)) return true;
             if (!CheckLength(args, 1)) return true;
+            if (data.FilePath == null)
+            {
+                Console.WriteLine("読み込まれているABIFファイルがありません。");
+                return true;
+            }
             if (Array.IndexOf(args, "-a") >= 0 || Array.IndexOf(args, "--all") >= 0)
             {
                 foreach (Ab1Directory element in data.Data.Data)

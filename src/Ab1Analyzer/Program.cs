@@ -11,7 +11,7 @@ namespace Ab1Analyzer
             if (args.Length > 0) CommandBase.Commands.GetCommand<LoadCommand>().Execute(data, args);
             while (!data.Exit)
             {
-                Console.Write($"{data.FilePath}> ");
+                Console.Write($"{data.FilePath}>> ");
                 string[] commands = Console.ReadLine().Split(' ');
                 DoCommand(commands);
             }

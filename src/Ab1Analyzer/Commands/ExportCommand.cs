@@ -33,12 +33,12 @@ fasta: DNA配列 (fasta)"),
         public override bool Execute(ProcessData data, string[] args)
         {
             if (base.Execute(data, args)) return true;
+            if (!CheckLength(args, 2)) return true;
             if (data.FilePath == null)
             {
                 Console.WriteLine("読み込まれているABIFファイルがありません。");
                 return true;
             }
-            if (!CheckLength(args, 2)) return true;
             string path = args[1];
             try
             {
