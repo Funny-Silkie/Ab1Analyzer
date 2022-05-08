@@ -8,9 +8,6 @@ namespace Ab1Analyzer
     /// </summary>
     public class LoadCommand : CommandBase
     {
-        /// <inheritdoc/>
-        public override string Name => "load";
-
         /// <summary>
         /// <see cref="LoadCommand"/>の新しいインスタンスを初期化します。
         /// </summary>

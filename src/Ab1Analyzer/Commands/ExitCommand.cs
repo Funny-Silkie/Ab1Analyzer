@@ -5,9 +5,6 @@
     /// </summary>
     public class ExitCommand : CommandBase
     {
-        /// <inheritdoc/>
-        public override string Name => "exit";
-
         /// <summary>
         /// <see cref="ExitCommand"/>の新しいインスタンスを初期化します。
         /// </summary>

@@ -5,9 +5,6 @@
     /// </summary>
     public class UnloadCommand : CommandBase
     {
-        /// <inheritdoc/>
-        public override string Name => "unload";
-
         /// <summary>
         /// <see cref="UnloadCommand"/>の新しいインスタンスを初期化します。
         /// </summary>

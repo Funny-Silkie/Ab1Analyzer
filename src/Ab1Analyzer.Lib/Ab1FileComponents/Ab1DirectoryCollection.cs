@@ -168,6 +168,24 @@ namespace Ab1Analyzer
         }
 
         /// <summary>
+        /// 指定した名前を持つ要素を取得または設定します。
+        /// </summary>
+        /// <param name="name">検索する<see cref="Ab1Directory.TagName"/></param>
+        /// <param name="values"><paramref name="name"/>に対応する要素 見つからなかったらnull</param>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/>がnull</exception>
+        /// <returns><paramref name="values"/>が見つかったらtrue，それ以外でfalse</returns>
+        public bool TryGetValues(string name, out Ab1Directory[] values)
+        {
+            if (!items.TryGetValue(name, out Dictionary<int, Ab1Directory> dic))
+            {
+                values = default;
+                return false;
+            }
+            values = dic.Values.ToArray();
+            return true;
+        }
+
+        /// <summary>
         /// 指定した名前と番号を持つ要素を取得または設定します。
         /// </summary>
         /// <param name="name">検索する<see cref="Ab1Directory.TagName"/></param>

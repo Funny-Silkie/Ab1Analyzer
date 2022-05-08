@@ -25,7 +25,21 @@ namespace Ab1Analyzer
         /// <summary>
         /// コマンド名を取得します。
         /// </summary>
-        public abstract string Name { get; }
+        public virtual string Name
+        {
+            get
+            {
+                if (_name == null)
+                {
+                    string typeName = GetType().Name;
+                    if (typeName.EndsWith("Command")) typeName = typeName.Substring(0, typeName.Length - "Command".Length);
+                    _name = typeName.ToLower();
+                }
+                return _name;
+            }
+        }
+
+        private string _name;
 
         /// <summary>
         /// <see cref="CommandBase"/>の新しいインスタンスを初期化します。
