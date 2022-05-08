@@ -1,35 +1,32 @@
 ﻿using System;
-using System.IO;
 
 namespace Ab1Analyzer
 {
     internal class Program
     {
+        private static ProcessData data = new();
+
         private static void Main(string[] args)
         {
-            for (int i = 0; i < args.Length; i++)
+            if (args.Length > 0) CommandBase.Commands.GetCommand<ReadFileCommand>().Execute(data, args);
+            while (!data.Exit)
             {
-                string path = args[i];
-                Console.WriteLine(path);
-                if (!File.Exists(path))
-                {
-                    Console.WriteLine("指定されたパスのファイルが存在しません。");
-                    continue;
-                }
-                try
-                {
-                    Ab1Data data = Ab1Data.Create(path);
-                    data.ExportBinaryMetaData($"{Path.GetFileName(path)}.csv");
-                    data.ExportElementData($"{Path.GetFileName(path)}_Data.json");
-                    var wrapper = new Ab1Wrapper(data);
-                    wrapper.ExportFasta($"{Path.GetFileName(path)}.fasta");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"エラーが発生しました：{e.GetType().FullName}{Environment.NewLine}{e.Message}");
-                    continue;
-                }
+                Console.Write($"{data.FilePath}> ");
+                string[] commands = Console.ReadLine().Split(' ');
+                DoCommand(commands);
             }
+        }
+
+        /// <summary>
+        /// コマンドを実行します。
+        /// </summary>
+        /// <param name="commands">コマンド</param>
+        private static void DoCommand(string[] commands)
+        {
+            if (commands == null || commands.Length == 0 || string.IsNullOrEmpty(commands[0])) return;
+            CommandBase command = CommandBase.Commands.FromName(commands[0]);
+            if (command != null) command.Execute(data, commands[1..]);
+            else Console.WriteLine($"コマンド\"{commands[0]}\"は存在しません。");
         }
     }
 }
