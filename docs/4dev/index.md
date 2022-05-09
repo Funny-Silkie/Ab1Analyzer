@@ -2,4 +2,4 @@
 
 ## 目次
 1. [ABIFファイル構造](./ABIFstructure.md)
-2. [Element Type]()
+2. [Element Type](./ElementTypeCode.md)

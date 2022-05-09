@@ -78,8 +78,4 @@ short[] a_raw = Array.ConvertAll(_a_raw, x => (short)x);
 
 要素の型は `Ab1Directory.ElementType` にて取得することができます。
 
-型情報については以下のドキュメント（外部サイト）が参考になります。
-
-- [東邦大学 ノート/シーケンサ出力の解読](https://pepper.is.sci.toho-u.ac.jp/pepper/index.php?%A5%CE%A1%BC%A5%C8%2F%A5%B7%A1%BC%A5%B1%A5%F3%A5%B5%BD%D0%CE%CF%A4%CE%B2%F2%C6%C9)
-- [Applied Biosystems Genetic Analysis Data File Format](https://projects.nfstc.org/workshops/resources/articles/ABIF_File_Format.pdf)
-
+型情報については[こちら](../../4dev/ElementTypeCode.md)を参照下さい。
