@@ -102,15 +102,6 @@ namespace Ab1Analyzer
             result.DataOffset = reader.ReadAsInt32();
             result.DataHandle = reader.ReadAsInt32();
 
-            //Common.OutputProperty(result, nameof(TagName));
-            //Common.OutputProperty(result, nameof(TagNumber));
-            //Common.OutputProperty(result, nameof(ElementType));
-            //Common.OutputProperty(result, nameof(ElementSize));
-            //Common.OutputProperty(result, nameof(ElementCount));
-            //Common.OutputProperty(result, nameof(DataSize));
-            //if (result.DataOffset > 4) Common.OutputProperty(result, nameof(DataOffset));
-            //Common.OutputProperty(result, nameof(DataHandle));
-
             return result;
         }
     }
