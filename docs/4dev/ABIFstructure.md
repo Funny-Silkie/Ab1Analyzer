@@ -67,3 +67,9 @@ TagNameからHeader.DataHandleまでの値は [Ab1DirectoryEntry](../../src/Ab1A
 
 各要素の値はヘッダーの `DataOffset` そのもの或いはその指定する領域によって示されます。
 ライブラリ内では `Ab1Directory.Elements` 内に格納されています。 `ElementType` が `User` や `UNKNOWN` などの復元不能な値を取る場合はバイナリファイルが読み取ったデータそのものがバイト配列として格納されています。
+
+## 参考資料
+
+- [東邦大学 ノート/シーケンサ出力の解読](https://pepper.is.sci.toho-u.ac.jp/pepper/index.php?%A5%CE%A1%BC%A5%C8%2F%A5%B7%A1%BC%A5%B1%A5%F3%A5%B5%BD%D0%CE%CF%A4%CE%B2%F2%C6%C9)
+- [Applied Biosystems Genetic Analysis Data File Format](https://projects.nfstc.org/workshops/resources/articles/ABIF_File_Format.pdf)
+
