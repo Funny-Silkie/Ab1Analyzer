@@ -51,7 +51,7 @@ namespace Ab1Analyzer
         /// </summary>
         /// <param name="reader">使用する<see cref="BinaryReader"/>のインスタンス</param>
         /// <exception cref="ArgumentNullException"><paramref name="reader"/>がnull</exception>
-        /// <returns><see cref="Ab1Directory"/>の新しいインスタンス<returns>
+        /// <returns><see cref="Ab1Directory"/>の新しいインスタンス</returns>
         internal static Ab1Directory Create(BinaryReader reader)
         {
             var result = new Ab1Directory();
