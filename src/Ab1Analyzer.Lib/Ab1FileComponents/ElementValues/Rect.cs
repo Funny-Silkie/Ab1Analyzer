@@ -24,6 +24,15 @@ namespace Ab1Analyzer
             this.right = right;
         }
 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public readonly void Deconstruct(out short top, out short left, out short bottom, out short right)
+        {
+            top = this.top;
+            left = this.left;
+            bottom = this.bottom;
+            right = this.right;
+        }
+
         /// <inheritdoc/>
         public readonly bool Equals(Rect other) => top == other.top && left == other.left && bottom == other.bottom && right == other.right;
 
@@ -35,6 +44,12 @@ namespace Ab1Analyzer
 
         /// <inheritdoc/>
         public override readonly string ToString() => $"({top}, {left}, {bottom}, {right})";
+
+        /// <summary>
+        /// <see cref="VRect"/>に変換します。
+        /// </summary>
+        /// <returns><see cref="VRect"/>の新しいインスタンス</returns>
+        public readonly VRect To32bit() => new VRect(top, left, bottom, right);
 
         public static bool operator ==(Rect left, Rect right) => left.Equals(right);
 

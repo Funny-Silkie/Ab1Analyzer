@@ -43,6 +43,15 @@ namespace Ab1Analyzer
             this.hsecond = hsecond;
         }
 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public readonly void Deconstruct(out byte hour, out byte minute, out byte second, out byte hsecond)
+        {
+            hour = this.hour;
+            minute = this.minute;
+            second = this.second;
+            hsecond = this.hsecond;
+        }
+
         /// <inheritdoc/>
         public readonly bool Equals(Time other) => hour == other.hour && minute == other.minute && second == other.second && hsecond == other.hsecond;
 

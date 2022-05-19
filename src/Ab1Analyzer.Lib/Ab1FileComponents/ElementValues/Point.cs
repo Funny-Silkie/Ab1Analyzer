@@ -29,6 +29,13 @@ namespace Ab1Analyzer
             this.h = h;
         }
 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public readonly void Deconstruct(out short v, out short h)
+        {
+            v = this.v;
+            h = this.h;
+        }
+
         /// <inheritdoc/>
         public readonly bool Equals(Point other) => v == other.v && h == other.h;
 
@@ -41,8 +48,22 @@ namespace Ab1Analyzer
         /// <inheritdoc/>
         public override readonly string ToString() => $"({v}, {h})";
 
+        /// <summary>
+        /// <see cref="VPoint"/>に変換します。
+        /// </summary>
+        /// <returns><see cref="VPoint"/>の新しいインスタンス</returns>
+        public readonly VPoint To32bit() => new VPoint(v, h);
+
         public static bool operator ==(Point left, Point right) => left.Equals(right);
 
         public static bool operator !=(Point left, Point right) => !(left == right);
+
+        public static Point operator +(Point value) => value;
+
+        public static Point operator -(Point value) => new Point((short)-value.v, (short)-value.h);
+
+        public static Point operator +(Point left, Point right) => new Point((short)(left.v + right.v), (short)(left.h + right.h));
+
+        public static Point operator -(Point left, Point right) => new Point((short)(left.v - right.v), (short)(left.h - right.h));
     }
 }

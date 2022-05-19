@@ -21,9 +21,9 @@
         /// <inheritdoc/>
         protected override IntegerFraction ParseInternal(BitInfo bytes)
         {
-            var result = new IntegerFraction();
-            result.numerator = bytes.ToInt32(0);
-            result.denominator = bytes.ToInt32(4);
+            int numerator = bytes.ToInt32(0);
+            int denominator = bytes.ToInt32(4);
+            var result = new IntegerFraction(numerator, denominator);
             return result;
         }
     }

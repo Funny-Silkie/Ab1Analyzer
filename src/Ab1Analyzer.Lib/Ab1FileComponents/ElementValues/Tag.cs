@@ -20,6 +20,13 @@ namespace Ab1Analyzer
             this.number = number;
         }
 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public readonly void Deconstruct(out string name, out int number)
+        {
+            name = this.name;
+            number = this.number;
+        }
+
         /// <inheritdoc/>
         public readonly bool Equals(Tag other) => name == other.name && number == other.number;
 

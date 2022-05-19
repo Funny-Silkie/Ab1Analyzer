@@ -24,6 +24,15 @@ namespace Ab1Analyzer
             this.n = n;
         }
 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public readonly void Deconstruct(out int d, out int u, out byte c, out byte n)
+        {
+            d = this.d;
+            u = this.u;
+            c = this.c;
+            n = this.n;
+        }
+
         /// <inheritdoc/>
         public readonly bool Equals(ThumbPrint other) => d == other.d && u == other.u && c == other.c && n == other.n;
 

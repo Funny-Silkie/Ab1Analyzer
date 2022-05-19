@@ -36,14 +36,35 @@ namespace Ab1Analyzer
             this.day = day;
         }
 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public readonly void Deconstruct(out short year, out byte month, out byte day)
+        {
+            year = this.year;
+            month = this.month;
+            day = this.day;
+        }
+
         /// <inheritdoc/>
         public readonly bool Equals(Date other) => year == other.year && month == other.month && day == other.day;
 
         /// <inheritdoc/>
         public override readonly bool Equals(object obj) => obj is Date date && Equals(date);
 
+        /// <summary>
+        /// <see cref="DateTime"/>から変換します。
+        /// </summary>
+        /// <param name="dateTime">使用する<see cref="DateTime"/>のインスタンス</param>
+        /// <returns><paramref name="dateTime"/>の情報を持つ<see cref="Date"/>の新しいインスタンス</returns>
+        public static Date FromDateTime(DateTime dateTime) => new Date((short)dateTime.Year, (byte)dateTime.Month, (byte)dateTime.Day);
+
         /// <inheritdoc/>
         public override readonly int GetHashCode() => HashCode.Combine(year, month, day);
+
+        /// <summary>
+        /// <see cref="DateTime"/>に変換します。
+        /// </summary>
+        /// <returns><see cref="DateTime"/>の新しいインスタンス</returns>
+        public readonly DateTime ToDateTime() => new DateTime(year, month, day);
 
         /// <inheritdoc/>
         public override readonly string ToString() => string.Format("{0:00}/{1:00}/{2:00}", year, month, day);
@@ -51,5 +72,9 @@ namespace Ab1Analyzer
         public static bool operator ==(Date left, Date right) => left.Equals(right);
 
         public static bool operator !=(Date left, Date right) => !(left == right);
+
+        public static implicit operator DateTime(Date value) => value.ToDateTime();
+
+        public static explicit operator Date(DateTime value) => FromDateTime(value);
     }
 }
