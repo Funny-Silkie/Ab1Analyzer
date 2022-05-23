@@ -11,22 +11,22 @@ namespace Ab1Analyzer
         /// <summary>
         /// 非数（0/0）を取得します。
         /// </summary>
-        public static IntegerFraction NaN => new IntegerFraction(0, 0);
+        public static IntegerFraction NaN { get; } = new IntegerFraction(0, 0);
 
         /// <summary>
         /// 負の無限大を表す値を取得します。
         /// </summary>
-        public static IntegerFraction NegativeInfinity => new IntegerFraction(-1, 0);
+        public static IntegerFraction NegativeInfinity { get; } = new IntegerFraction(-1, 0);
 
         /// <summary>
         /// 正の無限大を表す値を取得します。
         /// </summary>
-        public static IntegerFraction PositiveInfinity => new IntegerFraction(1, 0);
+        public static IntegerFraction PositiveInfinity { get; } = new IntegerFraction(1, 0);
 
         /// <summary>
         /// ゼロを表す値を取得します。
         /// </summary>
-        public static IntegerFraction Zero => new IntegerFraction(0, 1);
+        public static IntegerFraction Zero { get; } = new IntegerFraction(0, 1);
 
         /// <summary>
         /// 分子
@@ -95,6 +95,34 @@ namespace Ab1Analyzer
             }
             return left;
         }
+
+        /// <summary>
+        /// 指定した数が非数であるかどうかを検証します。
+        /// </summary>
+        /// <param name="value">検証する値</param>
+        /// <returns><paramref name="value"/>が非数であったらtrue，それ以外でfalse</returns>
+        public static bool IsNaN(IntegerFraction value) => value.denominator == 0 && value.numerator == 0;
+
+        /// <summary>
+        /// 値が有限の数を表しているかどうかを検証します。
+        /// </summary>
+        /// <param name="value">検証する値</param>
+        /// <returns><paramref name="value"/>が有限の数を表していたらtrue，それ以外でfalse</returns>
+        public static bool IsFinite(IntegerFraction value) => value.denominator != 0;
+
+        /// <summary>
+        /// 値が負の無限大を表すかどうかを検証します。
+        /// </summary>
+        /// <param name="value">検証する値</param>
+        /// <returns><paramref name="value"/>が負の無限大であったらtrue，それ以外でfalse</returns>
+        public static bool IsNegativeInfinity(IntegerFraction value) => value.denominator == 0 && value.numerator == -1;
+
+        /// <summary>
+        /// 値が正の無限大を表すかどうかを検証します。
+        /// </summary>
+        /// <param name="value">検証する値</param>
+        /// <returns><paramref name="value"/>が正の無限大であったらtrue，それ以外でfalse</returns>
+        public static bool IsPositiveInfinity(IntegerFraction value) => value.denominator == 0 && value.numerator == 1;
 
         /// <summary>
         /// 通分を行います。

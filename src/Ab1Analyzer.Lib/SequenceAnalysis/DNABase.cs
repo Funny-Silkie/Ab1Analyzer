@@ -9,6 +9,7 @@ namespace Ab1Analyzer
     [Serializable]
     public readonly struct DNABase : IEquatable<DNABase>, IComparable, IComparable<DNABase>
     {
+        private const byte BIT_NONE = 0b0000;
         private const byte BIT_A = 0b0001;
         private const byte BIT_T = 0b0010;
         private const byte BIT_G = 0b0100;
@@ -16,6 +17,7 @@ namespace Ab1Analyzer
 
         private static readonly char[] Chars = new[]
         {
+            '-',
             'A', 'T', 'G', 'C',
             'W', 'R', 'M', 'K', 'Y', 'S',
             'D', 'H', 'V', 'B',
@@ -23,24 +25,29 @@ namespace Ab1Analyzer
         };
 
         /// <summary>
+        /// ブランクを表すインスタンスを取得します。
+        /// </summary>
+        public static DNABase None { get; } = new DNABase(BIT_NONE);
+
+        /// <summary>
         /// 塩基Aを表すインスタンスを取得します。
         /// </summary>
-        public static DNABase A { get; } = new DNABase('A', BIT_A);
+        public static DNABase A { get; } = new DNABase(BIT_A);
 
         /// <summary>
         /// 塩基Tを表すインスタンスを取得します。
         /// </summary>
-        public static DNABase T { get; } = new DNABase('T', BIT_T);
+        public static DNABase T { get; } = new DNABase(BIT_T);
 
         /// <summary>
         /// 塩基Gを表すインスタンスを取得します。
         /// </summary>
-        public static DNABase G { get; } = new DNABase('G', BIT_G);
+        public static DNABase G { get; } = new DNABase(BIT_G);
 
         /// <summary>
         /// 塩基Cを表すインスタンスを取得します。
         /// </summary>
-        public static DNABase C { get; } = new DNABase('C', BIT_C);
+        public static DNABase C { get; } = new DNABase(BIT_C);
 
         /// <summary>
         /// 塩基Wを表すインスタンスを取得します。
@@ -111,6 +118,22 @@ namespace Ab1Analyzer
         private readonly byte bits;
 
         /// <summary>
+        /// 相補塩基を求めます。
+        /// </summary>
+        public DNABase Complement
+        {
+            get
+            {
+                byte result = 0;
+                if ((bits & BIT_A) == BIT_A) result |= BIT_T;
+                if ((bits & BIT_T) == BIT_T) result |= BIT_A;
+                if ((bits & BIT_C) == BIT_C) result |= BIT_G;
+                if ((bits & BIT_G) == BIT_G) result |= BIT_C;
+                return new DNABase(result);
+            }
+        }
+
+        /// <summary>
         /// <see cref="Value"/>が複数種類の塩基を指しているかどうかを表す値を取得します。
         /// </summary>
         public bool IsMultiple => !(Value == 'A' || Value == 'T' || Value == 'G' || Value == 'C');
@@ -118,24 +141,7 @@ namespace Ab1Analyzer
         /// <summary>
         /// 塩基を表す文字を取得します。
         /// </summary>
-        public char Value { get; }
-
-        /// <summary>
-        /// <see cref="DNABase"/>の新しいインスタンスを初期化します。
-        /// </summary>
-        /// <param name="value">塩基</param>
-        /// <param name="bits">
-        /// 塩基のビット情報
-        /// <list type="table">A: 0b00000001</list>
-        /// <list type="table">T: 0b00000010</list>
-        /// <list type="table">G: 0b00000100</list>
-        /// <list type="table">C: 0b00001000</list>
-        /// </param>
-        internal DNABase(char value, byte bits)
-        {
-            Value = value;
-            this.bits = bits;
-        }
+        public char Value => FromBits(bits);
 
         /// <summary>
         /// <see cref="DNABase"/>の新しいインスタンスを初期化します。
@@ -150,8 +156,14 @@ namespace Ab1Analyzer
         internal DNABase(byte bits)
         {
             this.bits = bits;
-            Value = FromBits(bits);
         }
+
+        /// <summary>
+        /// 塩基情報を持たないインスタンスであるかどうかを判定します。
+        /// </summary>
+        /// <param name="value">検証する値</param>
+        /// <returns><paramref name="value"/>が塩基情報を持たないならtrue，それ以外でfalse</returns>
+        public static bool IsNone(DNABase value) => value.bits == BIT_NONE;
 
         /// <summary>
         /// 塩基の文字からビット情報を取得します。
@@ -164,6 +176,7 @@ namespace Ab1Analyzer
             success = true;
             switch (value)
             {
+                case '-': return BIT_NONE;
                 case 'A': return BIT_A;
                 case 'T': return BIT_T;
                 case 'G': return BIT_G;
@@ -189,7 +202,6 @@ namespace Ab1Analyzer
         /// ビット情報から塩基の文字を取得します。
         /// </summary>
         /// <param name="bits">ビット情報</param>
-        /// <exception cref="ArgumentException"><paramref name="bits"/>が塩基情報を持たない</exception>
         /// <returns>塩基を表す文字</returns>
         private static char FromBits(byte bits)
         {
@@ -213,7 +225,7 @@ namespace Ab1Analyzer
                 return hasC ? 'Y' : 'T';
             }
             if (hasG) return hasC ? 'S' : 'G';
-            return hasC ? 'C' : throw new ArgumentException("塩基が含まれていません", nameof(bits));
+            return hasC ? 'C' : '-';
         }
 
         /// <summary>
@@ -226,7 +238,7 @@ namespace Ab1Analyzer
         {
             byte bits = FromChar(value, out bool success);
             if (!success) throw new ArgumentException("塩基を表していません", nameof(value));
-            return new DNABase(value, bits);
+            return new DNABase(bits);
         }
 
         /// <summary>
@@ -238,7 +250,7 @@ namespace Ab1Analyzer
         public static bool TryParse(char value, out DNABase result)
         {
             byte bits = FromChar(value, out bool success);
-            result = new DNABase(value, bits);
+            result = new DNABase(bits);
             return success;
         }
 
@@ -276,7 +288,7 @@ namespace Ab1Analyzer
         private static DNABase Add(DNABase left, DNABase right)
         {
             byte bits = (byte)(left.bits | right.bits);
-            return new DNABase(FromBits(bits), bits);
+            return new DNABase(bits);
         }
 
         /// <inheritdoc/>

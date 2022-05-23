@@ -16,6 +16,15 @@ namespace Ab1Analyzer
         private string sequenceString;
 
         /// <summary>
+        /// 空配列を表すインスタンスを取得します。
+        /// </summary>
+        public static DNASequence Empty { get; } = new DNASequence
+        {
+            items = Array.Empty<DNABase>(),
+            sequenceString = String.Empty,
+        };
+
+        /// <summary>
         /// 配列長を取得します。
         /// </summary>
         public int Length => items.Length;
@@ -26,7 +35,7 @@ namespace Ab1Analyzer
         /// <param name="sequence">配列</param>
         public DNASequence(params DNABase[] sequence)
         {
-            if (sequence == null) this.items = Array.Empty<DNABase>();
+            if (sequence == null || sequence.Length == 0) this.items = Array.Empty<DNABase>();
             else this.items = (DNABase[])sequence.Clone();
         }
 
@@ -52,6 +61,15 @@ namespace Ab1Analyzer
         public DNASequence(DNABase[] sequence, int start, int count)
         {
             items = sequence.SubArray(start, count);
+        }
+
+        /// <summary>
+        /// <see cref="DNASequence"/>の新しいインスタンスを初期化します。
+        /// </summary>
+        /// <param name="value">使用する塩基</param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public DNASequence(DNABase value) : this(value, 1)
+        {
         }
 
         /// <summary>
@@ -86,7 +104,7 @@ namespace Ab1Analyzer
 
         public DNABase this[Index index] => items[index];
 
-        public DNASequence this[Range range] => new DNASequence(items[range]);
+        public DNASequence this[Range range] => DirectlyCreate(items[range]);
 
         /// <summary>
         /// 2つの配列を結合します。
@@ -104,7 +122,7 @@ namespace Ab1Analyzer
             var array = new DNABase[length0 + length1];
             if (seq0 != null) Array.Copy(seq0.items, 0, array, 0, length0);
             if (seq1 != null) Array.Copy(seq1.items, 0, array, length1, length1);
-            return new DNASequence(array);
+            return DirectlyCreate(array);
         }
 
         /// <summary>
@@ -126,7 +144,21 @@ namespace Ab1Analyzer
             if (seq0 != null) Array.Copy(seq0.items, 0, array, 0, length0);
             if (seq1 != null) Array.Copy(seq1.items, 0, array, length1, length1);
             if (seq2 != null) Array.Copy(seq2.items, 0, array, length1 + length2, length2);
-            return new DNASequence(array);
+            return DirectlyCreate(array);
+        }
+
+        /// <summary>
+        /// 配列をそのまま適用した<see cref="DNASequence"/>の新しいインスタンスを生成します。
+        /// </summary>
+        /// <param name="array">使用する配列</param>
+        /// <exception cref="ArgumentNullException"><paramref name="array"/>がnull</exception>
+        /// <returns><paramref name="array"/>を直接<see cref="items"/>とした<see cref="DNASequence"/>の新しいインスタンス</returns>
+        private static DNASequence DirectlyCreate(DNABase[] array)
+        {
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            var result = new DNASequence();
+            result.items = array;
+            return result;
         }
 
         /// <summary>
@@ -166,7 +198,7 @@ namespace Ab1Analyzer
                 list.Add(b);
             }
 
-            sequence = new DNASequence(list.ToArray());
+            sequence = DirectlyCreate(list.ToArray());
             return true;
         }
 
@@ -216,6 +248,15 @@ namespace Ab1Analyzer
         /// <inheritdoc/>
         public override bool Equals(object obj) => Equals(obj as DNASequence);
 
+        /// <summary>
+        /// 相補配列を取得します。
+        /// </summary>
+        /// <returns>相補配列</returns>
+        public DNASequence GetComplement()
+        {
+            return DirectlyCreate(items.ConvertAll(x => x.Complement));
+        }
+
         /// <inheritdoc/>
         public override int GetHashCode()
         {
@@ -243,12 +284,7 @@ namespace Ab1Analyzer
         /// <inheritdoc/>
         public override string ToString()
         {
-            if (sequenceString == null)
-            {
-                var builder = new StringBuilder();
-                for (int i = 0; i < Length; i++) builder.Append(this[i].Value);
-                sequenceString = builder.ToString();
-            }
+            if (sequenceString == null) sequenceString = string.Join(string.Empty, this);
 
             return sequenceString;
         }
@@ -269,7 +305,7 @@ namespace Ab1Analyzer
             var array = new DNABase[left.Length + 1];
             Array.Copy(array, 0, left.items, 0, left.Length);
             array[^1] = right;
-            return new DNASequence(array);
+            return DirectlyCreate(array);
         }
     }
 }
